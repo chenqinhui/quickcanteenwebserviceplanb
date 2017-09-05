@@ -39,7 +39,7 @@ public class UserController extends APIBaseController {
             baseJson.setErrorMessage("成功");
             String token = tokenService.generateToken(Role.User, userInfo.getUserId());
             BaseBean baseBean = new BaseBean();
-            baseBean.setSingleResult(token);
+            baseBean.setSingleResult(token + " " + userInfo.getUserId());
             baseJson.setObj(baseBean);
         }
         return baseJson;
@@ -64,6 +64,7 @@ public class UserController extends APIBaseController {
             default:
                 return getUnauthorizedResult();
         }
+        baseJson.setReturnCode("4.0");
         return baseJson;
     }
 }
