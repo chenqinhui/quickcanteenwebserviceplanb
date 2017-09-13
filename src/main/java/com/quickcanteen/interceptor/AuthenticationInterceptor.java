@@ -40,7 +40,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
                 if (handlerMethod.getBean() instanceof AuthenticationRequiredController) {
                     ((AuthenticationRequiredController) handlerMethod.getBean()).setToken(token);
                 }
-                if (token == null || token.isExpired()) {
+                if (token == null /*|| token.isExpired()*/) {
                     makeResponse(handlerMethod.getBean(), httpServletRequest, httpServletResponse);
                     return false;
                 }
