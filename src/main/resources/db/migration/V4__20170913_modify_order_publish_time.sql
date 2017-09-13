@@ -1,0 +1,1 @@
+ALTER TABLE `order` CHANGE COLUMN `publish_time` `publish_time` datetime NOT NULL;

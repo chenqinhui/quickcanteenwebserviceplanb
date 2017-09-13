@@ -56,7 +56,7 @@ public class ExecTimeAspect {
             }
         } catch (Throwable throwable) {
             logger.error("aop record method exec time error", throwable);
-            throw throwable;
+            //throw throwable;
         }
         return output;
     }

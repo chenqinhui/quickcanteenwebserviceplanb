@@ -2,6 +2,7 @@ package com.quickcanteen.controller.api;
 
 import com.quickcanteen.annotation.Authentication;
 import com.quickcanteen.dto.BaseJson;
+import com.quickcanteen.dto.DishesBean;
 import com.quickcanteen.dto.TypeBean;
 import com.quickcanteen.mapper.CompanyInfoMapper;
 import com.quickcanteen.mapper.DishesMapper;

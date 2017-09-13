@@ -1,0 +1,1 @@
+ALTER TABLE `order` CHANGE COLUMN `order_state` `order_status` int(11) DEFAULT 10;
