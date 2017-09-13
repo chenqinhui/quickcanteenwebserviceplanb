@@ -10,6 +10,7 @@ import com.quickcanteen.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -41,6 +42,110 @@ public class UserController extends APIBaseController {
             BaseBean baseBean = new BaseBean();
             baseBean.setSingleResult(token + " " + userInfo.getUserId());
             baseJson.setObj(baseBean);
+        }
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/editPassword")
+    @ResponseBody
+    @Authentication({Role.User, Role.Admin})
+    public BaseJson editPassword(@RequestParam("userID") String userIDString, @RequestParam("userPassword") String userPassword, @RequestParam("newPassword") String newPassword )
+    {
+        BaseJson baseJson = new BaseJson();
+        int userID = Integer.parseInt(userIDString);
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userID);
+        switch (getToken().getRole())
+        {
+            case User:
+                if(getToken().getId()==userID)
+                {
+                    if (!userInfo.getUserPassword().equals(userPassword)) {
+                        baseJson.setReturnCode("6.0.E.1");
+                        baseJson.setErrorMessage("原密码错误");
+                        String token = tokenService.generateToken(Role.User, userInfo.getUserId());
+                        BaseBean baseBean = new BaseBean();
+                        baseBean.setSingleResult(token + " " + userInfo.getUserId());
+                        baseJson.setObj(baseBean);
+                    }
+                    else {
+                        userInfo.setUserPassword(newPassword);
+                        userInfoMapper.updateByPrimaryKey(userInfo);
+                        baseJson.setReturnCode("6.0");
+                        baseJson.setErrorMessage("修改成功");
+                        String token = tokenService.generateToken(Role.User, userInfo.getUserId());
+                        BaseBean baseBean = new BaseBean();
+                        baseBean.setSingleResult(token + " " + userInfo.getUserId());
+                        baseJson.setObj(baseBean);
+                    }
+                }
+                else
+                    {
+                        return  getUnauthorizedResult();
+                    }
+            case Admin:
+                    userInfo.setUserPassword(newPassword);
+                    userInfoMapper.updateByPrimaryKey(userInfo);
+                    baseJson.setReturnCode("6.0");
+                    baseJson.setErrorMessage("修改成功");
+                    String token = tokenService.generateToken(Role.User, userInfo.getUserId());
+                    BaseBean baseBean = new BaseBean();
+                    baseBean.setSingleResult(token + " " + userInfo.getUserId());
+                    baseJson.setObj(baseBean);
+        }
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/editUserInfo")
+    @ResponseBody
+    @Authentication({Role.User, Role.Admin})
+    public BaseJson editUserInfo(@RequestParam("userID") String userIDString, @RequestParam("userPassword") String userPassword, @RequestParam("infoType") String infoType, @RequestParam("correctInfo")String correctInfo)
+    {
+        BaseJson baseJson = new BaseJson();
+        int userID = Integer.parseInt(userIDString);
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userID);
+        switch (getToken().getRole())
+        {
+            case User:if(getToken().getId()==userID)
+            {
+                if (!userInfo.getUserPassword().equals(userPassword)) {
+                    baseJson.setReturnCode("6.0.E.1");
+                    baseJson.setErrorMessage("密码错误");
+                    String token = tokenService.generateToken(Role.User, userInfo.getUserId());
+                    BaseBean baseBean = new BaseBean();
+                    baseBean.setSingleResult(token + " " + userInfo.getUserId());
+                    baseJson.setObj(baseBean);
+                }
+                else {
+                   switch (infoType)
+                   {
+                       case "telephone":
+                           userInfo.setTelephone(correctInfo);
+                           userInfoMapper.updateByPrimaryKey(userInfo);
+                   }
+                    baseJson.setReturnCode("6.0");
+                    baseJson.setErrorMessage("修改成功");
+                    String token = tokenService.generateToken(Role.User, userInfo.getUserId());
+                    BaseBean baseBean = new BaseBean();
+                    baseBean.setSingleResult(token + " " + userInfo.getUserId());
+                    baseJson.setObj(baseBean);
+                }
+            }
+            else
+            {
+                return  getUnauthorizedResult();
+            }
+            case Admin:
+                switch (infoType)
+                {
+                    case "telephone":
+                        userInfo.setTelephone(correctInfo);
+                }
+                baseJson.setReturnCode("6.0");
+                baseJson.setErrorMessage("修改成功");
+                String token = tokenService.generateToken(Role.User, userInfo.getUserId());
+                BaseBean baseBean = new BaseBean();
+                baseBean.setSingleResult(token + " " + userInfo.getUserId());
+                baseJson.setObj(baseBean);
         }
         return baseJson;
     }
