@@ -87,7 +87,7 @@ public interface DishesMapper {
             "from dishes natural join dishes_type",
             "where type_id = #{typeId,jdbcType=INTEGER}"
     })
-    @ResultMap("ResultMapForDishesBean")
+    @ResultType(com.quickcanteen.dto.DishesBean.class)
     List<DishesBean> selectByTypeId(Integer typeId);
 
     Integer checkDishesInCompany(@Param("dishesIds")List<Integer> dishesIds);
