@@ -1,9 +1,18 @@
 package com.quickcanteen.mapper;
 
+import com.quickcanteen.dto.CompanyInfoBean;
 import com.quickcanteen.model.CompanyInfo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
+import java.util.Map;
+import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
+import java.util.Map;
 
 public interface CompanyInfoMapper {
     @Delete({
@@ -45,6 +54,13 @@ public interface CompanyInfoMapper {
             "where company_id = #{companyId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(CompanyInfo record);
+
+    @Select({
+            "select * ",
+            "from company_info"
+    })
+    @ResultMap("BaseResultMap")
+    List<CompanyInfo> getCompanyInfoByPage(RowBounds rowBounds);
 
     @Select({"<script>",
             "select *",

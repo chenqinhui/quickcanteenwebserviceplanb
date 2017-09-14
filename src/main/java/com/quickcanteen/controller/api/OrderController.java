@@ -188,7 +188,7 @@ public class OrderController extends APIBaseController {
             BeanUtils.copyProperties(orderBean, order);
             orderBean.setCompanyName(companyInfoMapper.selectByPrimaryKey(orderBean.getCompanyId()).getCompanyName());
             orderBean.setTimeslot(orderBean.getTimeslotId() == 0 ? "" : getTimeSlotString(timeSlotMapper.selectByPrimaryKey(orderBean.getTimeslotId())));
-            orderBean.setDishesList(dishesMapper.selectByOrderId(orderBean.getOrderId()));
+            orderBean.setDishesBeanList(dishesMapper.selectByOrderId(orderBean.getOrderId()));
         } catch (NullPointerException np) {
             logger.warn("unexpected companyId " + orderBean.getCompanyId());
         } catch (Exception e) {
