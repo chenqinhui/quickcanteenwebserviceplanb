@@ -15,6 +15,10 @@ public class CompanyInfo {
 
     private Date endTime;
 
+    private Integer busyDegree;
+
+    private Double rating;
+
     public Integer getCompanyId() {
         return companyId;
     }
@@ -61,5 +65,21 @@ public class CompanyInfo {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Integer getBusyDegree() {
+        return busyDegree;
+    }
+
+    public void setBusyDegree(Integer busyDegree) {
+        this.busyDegree = busyDegree;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 }
