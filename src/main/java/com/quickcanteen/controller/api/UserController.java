@@ -81,7 +81,7 @@ public class UserController extends APIBaseController {
     private UserInfoBean parse(UserInfo userInfo) {
         UserInfoBean userInfoBean = new UserInfoBean();
         try {
-            BeanUtils.copyProperties(userInfoBean, userInfo);
+            BeanUtils.copyProperties(userInfo,userInfoBean);
         } catch (Exception e) {
 
         }
