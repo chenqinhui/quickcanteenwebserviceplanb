@@ -8,6 +8,8 @@
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="busy_degree" property="busyDegree" javaType="INTEGER" />
+    <result column="rating" property="rating" javaType="DOUBLE"/>
   </resultMap>
   <sql id="Base_Column_List" >
     company_id, company_name, account_number, password, start_time, end_time
