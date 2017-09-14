@@ -8,7 +8,9 @@ public enum OrderStatus {
     PREPARING(30, "准备中"),
     PEND_TO_TAKE(40, "待取餐"),
     DISTRIBUTING(50, "待配送"),
-    CANCELLED(60, "取消"),
+    NOT_COMMENT(60, "未评价"),
+    COMPLETE(70, "已完成"),
+    CANCELLED(80, "取消"),
     CLOSED(90, "被商家取消");
 
 

@@ -2,6 +2,7 @@ package com.quickcanteen.controller.api;
 
 import com.google.common.collect.Lists;
 import com.quickcanteen.annotation.Authentication;
+import com.quickcanteen.dto.BaseBean;
 import com.quickcanteen.dto.BaseJson;
 import com.quickcanteen.dto.OrderBean;
 import com.quickcanteen.dto.Role;
@@ -64,6 +65,44 @@ public class OrderController extends APIBaseController {
             case Company:
                 if (order.getCompanyId().equals(getToken().getId())) {
                     baseJson.setObj(order);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;
+            default:
+                return getUnauthorizedResult();
+        }
+        BaseBean baseBean = new BaseBean();
+        baseBean.setSingleResult(String.valueOf(1));
+        baseJson.setObj(baseBean);
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/updateOrderState")
+    @Authentication
+    public BaseJson updateOrderState(@RequestParam("orderId") Integer orderId,
+                                     @RequestParam("orderStatus") Integer orderStatus) {
+        BaseJson baseJson = new BaseJson();
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        if (order == null) {
+            return getResourceNotFoundResult();
+        }else {
+            order.setOrderStatus(orderStatus);
+        }
+        switch (getToken().getRole()) {
+            case User:
+                if (order.getUserId().equals(getToken().getId())) {
+                    orderMapper.updateOrderStatus(order);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;
+            case Admin:
+                orderMapper.updateOrderStatus(order);
+                break;
+            case Company:
+                if (order.getCompanyId().equals(getToken().getId())) {
+                    orderMapper.updateOrderStatus(order);
                 } else {
                     return getUnauthorizedResult();
                 }
@@ -149,7 +188,7 @@ public class OrderController extends APIBaseController {
             BeanUtils.copyProperties(orderBean, order);
             orderBean.setCompanyName(companyInfoMapper.selectByPrimaryKey(orderBean.getCompanyId()).getCompanyName());
             orderBean.setTimeslot(orderBean.getTimeslotId() == 0 ? "" : getTimeSlotString(timeSlotMapper.selectByPrimaryKey(orderBean.getTimeslotId())));
-            orderBean.setDishesBeanList(dishesMapper.selectByOrderId(orderBean.getOrderId()));
+            orderBean.setDishesList(dishesMapper.selectByOrderId(orderBean.getOrderId()));
         } catch (NullPointerException np) {
             logger.warn("unexpected companyId " + orderBean.getCompanyId());
         } catch (Exception e) {

@@ -12,7 +12,7 @@
     <result column="timeslot_id" property="timeslotId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    order_id, user_id, company_id, order_status, publish_time, complete_time, total_price, 
+    order_id, user_id, company_id, order_status, publish_time, complete_time, total_price,
     timeslot_id
   </sql>
   <insert id="insertSelective" parameterType="com.quickcanteen.model.Order" useGeneratedKeys="true" keyProperty="orderId" >
