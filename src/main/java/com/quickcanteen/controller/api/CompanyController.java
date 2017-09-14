@@ -59,7 +59,7 @@ public class CompanyController extends APIBaseController {
         TypeBean typeBean = new TypeBean();
         try {
             BeanUtils.copyProperties(typeBean, type);
-            typeBean.setDishesBeans(dishesMapper.selectByTypeId(type.getTypeId()));
+            typeBean.setDishesBeanList(dishesMapper.selectByTypeId(type.getTypeId()));
         } catch (Exception e) {
 
         }
