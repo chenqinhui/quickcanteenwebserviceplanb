@@ -32,7 +32,7 @@ public class CompanyController extends APIBaseController {
     @Autowired
     private DishesMapper dishesMapper;
 
-    @RequestMapping(value = "/getOrderById")
+    @RequestMapping(value = "/getCompanyInfoById")
     @Authentication
     public BaseJson getCompanyInfoById(@RequestParam("companyID") Integer companyID) {
         BaseJson baseJson = new BaseJson();
@@ -49,7 +49,7 @@ public class CompanyController extends APIBaseController {
     @Authentication
     public BaseJson getTypesAndDishesByCompanyId(@RequestParam("companyID") Integer companyID) {
         BaseJson baseJson = new BaseJson();
-        List<TypeBean> typeBeans = typeMapper.selectByCompangyId(companyID).stream().map(this::parse).collect(Collectors.toList());
+        List<TypeBean> typeBeans = typeMapper.selectByCompanyId(companyID).stream().map(this::parse).collect(Collectors.toList());
         baseJson.setObj(typeBeans);
         baseJson.setReturnCode("");
         return baseJson;
