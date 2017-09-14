@@ -2,6 +2,7 @@ package com.quickcanteen.controller.api;
 
 import com.google.common.collect.Lists;
 import com.quickcanteen.annotation.Authentication;
+import com.quickcanteen.dto.BaseBean;
 import com.quickcanteen.dto.BaseJson;
 import com.quickcanteen.dto.OrderBean;
 import com.quickcanteen.dto.Role;
@@ -11,6 +12,7 @@ import com.quickcanteen.model.OrderDishes;
 import com.quickcanteen.model.TimeSlot;
 import com.quickcanteen.util.DateUtils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +72,69 @@ public class OrderController extends APIBaseController {
             default:
                 return getUnauthorizedResult();
         }
+        BaseBean baseBean = new BaseBean();
+        baseBean.setSingleResult(String.valueOf(1));
+        baseJson.setObj(baseBean);
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/updateOrderState")
+    @Authentication
+    public BaseJson updateOrderState(@RequestParam("orderId") Integer orderId,
+                                     @RequestParam("orderStatus") Integer orderStatus) {
+        BaseJson baseJson = new BaseJson();
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        if (order == null) {
+            return getResourceNotFoundResult();
+        }else {
+            order.setOrderStatus(orderStatus);
+        }
+        switch (getToken().getRole()) {
+            case User:
+                if (order.getUserId().equals(getToken().getId())) {
+                    orderMapper.updateOrderStatus(order);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;
+            case Admin:
+                orderMapper.updateOrderStatus(order);
+                break;
+            case Company:
+                if (order.getCompanyId().equals(getToken().getId())) {
+                    orderMapper.updateOrderStatus(order);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;
+            default:
+                return getUnauthorizedResult();
+        }
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/getOrdersListByUserIDByPage")
+    @Authentication
+    public BaseJson getOrdersListByUserIDByPage(@RequestParam("userID") Integer userId,
+                                                @RequestParam("pageNumber") Integer pageNumber,
+                                                @RequestParam("pageSize") Integer pageSize) {
+        BaseJson baseJson = new BaseJson();
+        List<Order> orders = orderMapper.selectByUserId(userId, new RowBounds(pageNumber * pageSize, pageSize));
+        List<OrderBean> orderBeans = orders.stream().map(this::parse).collect(Collectors.toList());
+        switch (getToken().getRole()) {
+            case User:
+                if (userId.equals(getToken().getId())) {
+                    baseJson.setObj(orderBeans);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;
+            case Admin:
+                baseJson.setObj(orderBeans);
+                break;
+            default:
+                return getUnauthorizedResult();
+        }
         return baseJson;
     }
 
@@ -123,7 +188,7 @@ public class OrderController extends APIBaseController {
             BeanUtils.copyProperties(orderBean, order);
             orderBean.setCompanyName(companyInfoMapper.selectByPrimaryKey(orderBean.getCompanyId()).getCompanyName());
             orderBean.setTimeslot(orderBean.getTimeslotId() == 0 ? "" : getTimeSlotString(timeSlotMapper.selectByPrimaryKey(orderBean.getTimeslotId())));
-            orderBean.setDishesBeanList(dishesMapper.selectByOrderId(orderBean.getOrderId()));
+            orderBean.setDishesList(dishesMapper.selectByOrderId(orderBean.getOrderId()));
         } catch (NullPointerException np) {
             logger.warn("unexpected companyId " + orderBean.getCompanyId());
         } catch (Exception e) {
