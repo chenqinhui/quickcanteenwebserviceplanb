@@ -83,12 +83,21 @@ public interface DishesMapper {
     List<DishesBean> selectByOrderId(Integer orderId);
 
     @Select({
-            "select *",
+            "select *,'0' as count ",
             "from dishes natural join dishes_type",
             "where type_id = #{typeId,jdbcType=INTEGER}"
     })
-    @ResultMap("ResultMapWithBLOBs")
+    @ResultMap("ResultMapForDishesBean")
     List<DishesBean> selectByTypeId(Integer typeId);
 
     Integer checkDishesInCompany(@Param("dishesIds")List<Integer> dishesIds);
+
+    @Select({"<script>",
+            "select *",
+            "from dishes ",
+            "<if test = \"keyword != null and keyword != ''\">where dishes_name like CONCAT('%',#{keyword},'%')</if>",
+            "</script>"
+    })
+    @ResultMap("ResultMapWithBLOBs")
+    List<Dishes> searchDishes(@Param("keyword") String keyword);
 }
