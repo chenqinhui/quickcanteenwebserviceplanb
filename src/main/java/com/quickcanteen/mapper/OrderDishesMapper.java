@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 public interface OrderDishesMapper {
     @Delete({
         "delete from order_dishes",
