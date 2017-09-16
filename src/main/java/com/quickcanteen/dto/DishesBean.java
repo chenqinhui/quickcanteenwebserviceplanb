@@ -1,5 +1,7 @@
 package com.quickcanteen.dto;
 
+import com.quickcanteen.model.Dishes;
+
 import java.util.Date;
 
 /**
@@ -20,6 +22,21 @@ public class DishesBean {
     private Integer count;
 
     public DishesBean() {
+        this.count = 0;
+    }
+
+    public DishesBean(Dishes dishes) {
+        this.dishesId = dishes.getDishesId();
+        this.companyId = dishes.getCompanyId();
+        this.price = dishes.getPrice();
+        this.diagrammaticSketchAddress = dishes.getDiagrammaticSketchAddress();
+        this.dishesName = dishes.getDishesName();
+        this.praiseNum = dishes.getPraiseNum();
+        this.commentNum = dishes.getCommentNum();
+        this.collectNum = dishes.getCollectNum();
+        this.publishTime = dishes.getPublishTime();
+        this.rating = dishes.getRating();
+        this.dishesIntroduce = dishes.getDishesIntroduce();
         this.count = 0;
     }
 
