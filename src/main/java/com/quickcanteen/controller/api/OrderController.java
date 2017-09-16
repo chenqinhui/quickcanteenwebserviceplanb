@@ -83,6 +83,7 @@ public class OrderController extends APIBaseController {
     public BaseJson updateOrderState(@RequestParam("orderId") Integer orderId,
                                      @RequestParam("orderStatus") Integer orderStatus) {
         BaseJson baseJson = new BaseJson();
+        BaseBean baseBean = new BaseBean();
         Order order = orderMapper.selectByPrimaryKey(orderId);
         if (order == null) {
             return getResourceNotFoundResult();
@@ -93,16 +94,22 @@ public class OrderController extends APIBaseController {
             case User:
                 if (order.getUserId().equals(getToken().getId())) {
                     orderMapper.updateOrderStatus(order);
+                    baseBean.setSingleResult("0");
+                    baseJson.setObj(baseBean);
                 } else {
                     return getUnauthorizedResult();
                 }
                 break;
             case Admin:
                 orderMapper.updateOrderStatus(order);
+                baseBean.setSingleResult("0");
+                baseJson.setObj(baseBean);
                 break;
             case Company:
                 if (order.getCompanyId().equals(getToken().getId())) {
                     orderMapper.updateOrderStatus(order);
+                    baseBean.setSingleResult("0");
+                    baseJson.setObj(baseBean);
                 } else {
                     return getUnauthorizedResult();
                 }
