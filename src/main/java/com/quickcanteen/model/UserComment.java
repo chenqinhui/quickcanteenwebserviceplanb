@@ -1,5 +1,8 @@
 package com.quickcanteen.model;
 
+import lombok.Data;
+
+@Data
 public class UserComment {
     private Integer commentId;
 
@@ -9,6 +12,16 @@ public class UserComment {
 
     private String commentContent;
 
+    public UserComment() {
+
+    }
+
+    public UserComment(Integer commenterId,Double rating,String commentContent){
+        this.commenterId = commenterId;
+        this.rating = rating;
+        this.commentContent = commentContent;
+    }
+/*
     public Integer getCommentId() {
         return commentId;
     }
@@ -39,5 +52,5 @@ public class UserComment {
 
     public void setCommentContent(String commentContent) {
         this.commentContent = commentContent == null ? null : commentContent.trim();
-    }
+    }*/
 }

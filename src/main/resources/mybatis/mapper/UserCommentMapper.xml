@@ -15,7 +15,7 @@
   <sql id="Blob_Column_List" >
     comment_content
   </sql>
-  <insert id="insertSelective" parameterType="com.quickcanteen.model.UserComment" >
+  <insert id="insertSelective" parameterType="com.quickcanteen.model.UserComment" useGeneratedKeys="true" keyProperty="commentId">
     insert into user_comment
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="commentId != null" >
