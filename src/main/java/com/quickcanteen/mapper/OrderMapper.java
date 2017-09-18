@@ -5,9 +5,6 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
-import org.apache.ibatis.session.RowBounds;
-
-import java.util.List;
 
 public interface OrderMapper {
     @Delete({
@@ -63,7 +60,7 @@ public interface OrderMapper {
 
     @Update({
             "update `order`",
-            "set order_status = #{orderStatus,jdbcType=INTEGER},",
+            "set order_status = #{orderStatus,jdbcType=INTEGER}",
             "where order_id = #{orderId,jdbcType=INTEGER}"
     })
     int updateOrderStatus(Order record);
