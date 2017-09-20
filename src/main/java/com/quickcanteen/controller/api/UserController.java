@@ -168,9 +168,9 @@ public class UserController extends APIBaseController {
         return baseJson;
     }
 
-    private CompanyInfoBean parse(CompanyInfo companyInfo) {
-        CompanyInfoBean result = new CompanyInfoBean();
-        BeanUtils.copyProperties(companyInfo, result);
+    private CompanyInfoBean parse(CompanyInfo companyInfo){
+        CompanyInfoBean result=new CompanyInfoBean();
+        BeanUtils.copyProperties(companyInfo,result);
         return result;
     }
 

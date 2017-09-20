@@ -6,6 +6,7 @@ import com.quickcanteen.annotation.Authentication;
 import com.quickcanteen.controller.api.APIBaseController;
 import com.quickcanteen.dto.DishesBean;
 import com.quickcanteen.mapper.CompanyInfoMapper;
+import com.quickcanteen.mapper.DishesMapper;
 import com.quickcanteen.model.CompanyInfo;
 import com.quickcanteen.model.Dishes;
 import com.quickcanteen.model.Order;
