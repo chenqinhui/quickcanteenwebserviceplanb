@@ -87,7 +87,7 @@ public class OrderController extends APIBaseController {
         Order order = orderMapper.selectByPrimaryKey(orderId);
         if (order == null) {
             return getResourceNotFoundResult();
-        }else {
+        } else {
             order.setOrderStatus(orderStatus);
         }
         switch (getToken().getRole()) {
@@ -114,6 +114,48 @@ public class OrderController extends APIBaseController {
                     return getUnauthorizedResult();
                 }
                 break;
+            default:
+                return getUnauthorizedResult();
+        }
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/updateTimeSlot")
+    @Authentication
+    public BaseJson updateTimeSlot(@RequestParam("orderId") Integer orderId,
+                                   @RequestParam("timeSlot") Integer orderTimeSlot) {
+        BaseJson baseJson = new BaseJson();
+        BaseBean baseBean = new BaseBean();
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        if (order == null) {
+            return getResourceNotFoundResult();
+        } else {
+            order.setTimeslotId(orderTimeSlot);
+        }
+        switch (getToken().getRole()) {
+            case User:
+                if (order.getUserId().equals(getToken().getId())) {
+                    orderMapper.updateTimeSlot(order);
+                    baseBean.setSingleResult("0");
+                    baseJson.setObj(baseBean);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;
+            /*case Admin:
+                orderMapper.updateOrderStatus(order);
+                baseBean.setSingleResult("0");
+                baseJson.setObj(baseBean);
+                break;
+            case Company:
+                if (order.getCompanyId().equals(getToken().getId())) {
+                    orderMapper.updateOrderStatus(order);
+                    baseBean.setSingleResult("0");
+                    baseJson.setObj(baseBean);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;*/
             default:
                 return getUnauthorizedResult();
         }
@@ -189,6 +231,7 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
+
     private OrderBean parse(Order order) {
         OrderBean orderBean = new OrderBean();
         try {
@@ -204,7 +247,113 @@ public class OrderController extends APIBaseController {
         return orderBean;
     }
 
+    @RequestMapping(value = "/getTimeSlotByOrdersID")
+    @Authentication
+    public BaseJson getTimeSlotByOrdersID(@RequestParam("ordersID") Integer ordersID) {
+        String timeSlotString;
+        TimeSlot timeSlot;
+        BaseJson baseJson = new BaseJson();
+        BaseBean baseBean = new BaseBean();
+        Order order = orderMapper.selectByPrimaryKey(ordersID);
+        timeSlot = timeSlotMapper.selectByPrimaryKey(order.getTimeslotId());
+        if (timeSlot == null) {
+            timeSlotString = null;
+        } else {
+            timeSlotString = getTimeSlotString(timeSlot);
+        }
+        switch (getToken().getRole()) {
+            case User:
+                if (order.getUserId().equals(getToken().getId())) {
+                    baseBean.setSingleResult(timeSlotString);
+                    baseJson.setObj(baseBean);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;
+            case Admin:
+                baseBean.setSingleResult(timeSlotString);
+                baseJson.setObj(baseBean);
+                break;
+            default:
+                return getUnauthorizedResult();
+        }
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/updateFinishTime")
+    @Authentication
+    public BaseJson updateFinishTime(@RequestParam("orderId") Integer ordersID) {
+        BaseJson baseJson = new BaseJson();
+        Order order = orderMapper.selectByPrimaryKey(ordersID);
+        order.setCompleteTime(new Date());
+        switch (getToken().getRole()) {
+            case User:
+                if (order.getUserId().equals(getToken().getId())) {
+                    orderMapper.updateFinishTime(order);
+                    baseJson.setObj(order);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;
+            /*case Admin:
+                orderMapper.updateFinishTime(order);
+                baseBean.setSingleResult("");
+                baseJson.setObj(baseBean);
+                break;
+            case Company:
+                if (order.getCompanyId().equals(getToken().getId())) {
+                    orderMapper.updateFinishTime(order);
+                    baseBean.setSingleResult("");
+                    baseJson.setObj(baseBean);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;*/
+            default:
+                return getUnauthorizedResult();
+        }
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/updateStartTime")
+    @Authentication
+    public BaseJson updateStartTime(@RequestParam("orderId") Integer ordersID) {
+        BaseJson baseJson = new BaseJson();
+        Order order = orderMapper.selectByPrimaryKey(ordersID);
+        order.setPublishTime(new Date());
+        switch (getToken().getRole()) {
+            case User:
+                if (order.getUserId().equals(getToken().getId())) {
+                    orderMapper.updateStartTime(order);
+                    baseJson.setObj(order);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;
+            /*case Admin:
+                orderMapper.updateStartTime(order);
+                baseBean.setSingleResult("");
+                baseJson.setObj(baseBean);
+                break;
+            case Company:
+                if (order.getCompanyId().equals(getToken().getId())) {
+                    orderMapper.updateStartTime(order);
+                    baseBean.setSingleResult("");
+                    baseJson.setObj(baseBean);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;*/
+            default:
+                return getUnauthorizedResult();
+        }
+        return baseJson;
+    }
+
     private String getTimeSlotString(TimeSlot timeSlot) {
-        return DateUtils.formatDateTime(timeSlot.getStartTime()) + " - " + DateUtils.formatDateTime(timeSlot.getEndTime());
+        String origin = DateUtils.formatDateTime(timeSlot.getStartTime()) + " - " + DateUtils.formatDateTime(timeSlot.getEndTime());
+        String a[] = origin.split(" ");
+        String result = a[1] + a[2] + a[4];
+        return result;
     }
 }
