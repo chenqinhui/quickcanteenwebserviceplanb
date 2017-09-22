@@ -34,8 +34,7 @@ public interface CompanyInfoMapper {
     int insertSelective(CompanyInfo record);
 
     @Select({
-            "select",
-            "company_id, company_name, account_number, password, start_time, end_time",
+            "select * ",
             "from company_info",
             "where company_id = #{companyId,jdbcType=INTEGER}"
     })

@@ -5,6 +5,16 @@ public class CommentCompanyKey {
 
     private Integer commentId;
 
+    public CommentCompanyKey() {
+
+    }
+
+    public CommentCompanyKey(int companyId,int commentId) {
+        this.companyId = companyId;
+        this.commentId = commentId;
+    }
+
+
     public Integer getCompanyId() {
         return companyId;
     }
