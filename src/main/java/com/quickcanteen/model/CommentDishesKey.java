@@ -5,6 +5,15 @@ public class CommentDishesKey {
 
     private Integer commentId;
 
+    public CommentDishesKey() {
+
+    }
+
+    public CommentDishesKey(int dishesId,int commentId) {
+        this.dishesId = dishesId;
+        this.commentId = commentId;
+    }
+
     public Integer getDishesId() {
         return dishesId;
     }

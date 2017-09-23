@@ -7,8 +7,6 @@ import com.quickcanteen.controller.api.APIBaseController;
 import com.quickcanteen.dto.DishesBean;
 import com.quickcanteen.mapper.CompanyInfoMapper;
 import com.quickcanteen.mapper.DishesMapper;
-import com.quickcanteen.mapper.OrderDishesMapper;
-import com.quickcanteen.mapper.OrderMapper;
 import com.quickcanteen.model.CompanyInfo;
 import com.quickcanteen.model.Dishes;
 import com.quickcanteen.model.Order;
@@ -23,6 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.*;
 import java.util.stream.Collectors;
 

@@ -64,4 +64,25 @@ public interface OrderMapper {
             "where order_id = #{orderId,jdbcType=INTEGER}"
     })
     int updateOrderStatus(Order record);
+
+    @Update({
+            "update `order`",
+            "set complete_time = #{completeTime,jdbcType=TIMESTAMP}",
+            "where order_id = #{orderId,jdbcType=INTEGER}"
+    })
+    int updateFinishTime(Order record);
+
+    @Update({
+            "update `order`",
+            "set publish_time = #{publishTime,jdbcType=TIMESTAMP}",
+            "where order_id = #{orderId,jdbcType=INTEGER}"
+    })
+    int updateStartTime(Order record);
+
+    @Update({
+            "update `order`",
+            "set timeslot_id = #{timeslotId,jdbcType=INTEGER}",
+            "where order_id = #{orderId,jdbcType=INTEGER}"
+    })
+    int updateTimeSlot(Order record);
 }
