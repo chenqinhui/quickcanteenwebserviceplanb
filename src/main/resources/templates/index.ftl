@@ -21,17 +21,15 @@ To change this template use File | Settings | File Templates.
     <div class="row">
         <ol class="breadcrumb">
             <li><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
-            <li class="active">Dashboard</li>
+            <li class="active">主页</li>
         </ol>
     </div><!--/.row-->
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Dashboard</h1>
+            <h1 class="page-header">主页</h1>
         </div>
     </div><!--/.row-->
-
-    <div class="copyrights">Collect from <a href="http://www.cssmoban.com/" >网页模板</a></div>
 
     <div class="row">
         <div class="col-xs-12 col-md-6 col-lg-3">
@@ -41,8 +39,8 @@ To change this template use File | Settings | File Templates.
                         <em class="glyphicon glyphicon-shopping-cart glyphicon-l"></em>
                     </div>
                     <div class="col-sm-9 col-lg-7 widget-right">
-                        <div class="large">120</div>
-                        <div class="text-muted">New Orders</div>
+                        <div class="large">${weekOrder}</div>
+                        <div class="text-muted">本周订单</div>
                     </div>
                 </div>
             </div>
@@ -54,8 +52,8 @@ To change this template use File | Settings | File Templates.
                         <em class="glyphicon glyphicon-comment glyphicon-l"></em>
                     </div>
                     <div class="col-sm-9 col-lg-7 widget-right">
-                        <div class="large">52</div>
-                        <div class="text-muted">Comments</div>
+                        <div class="large">${weekIncome}</div>
+                        <div class="text-muted">本周盈利</div>
                     </div>
                 </div>
             </div>
@@ -67,8 +65,8 @@ To change this template use File | Settings | File Templates.
                         <em class="glyphicon glyphicon-user glyphicon-l"></em>
                     </div>
                     <div class="col-sm-9 col-lg-7 widget-right">
-                        <div class="large">24</div>
-                        <div class="text-muted">New Users</div>
+                        <div class="large">${rating}</div>
+                        <div class="text-muted">用户评分</div>
                     </div>
                 </div>
             </div>
@@ -80,8 +78,8 @@ To change this template use File | Settings | File Templates.
                         <em class="glyphicon glyphicon-stats glyphicon-l"></em>
                     </div>
                     <div class="col-sm-9 col-lg-7 widget-right">
-                        <div class="large">25.2k</div>
-                        <div class="text-muted">Visitors</div>
+                        <div class="large">100</div>
+                        <div class="text-muted">信誉评分</div>
                     </div>
                 </div>
             </div>
@@ -91,10 +89,10 @@ To change this template use File | Settings | File Templates.
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Site Traffic Overview</div>
+                <div class="panel-heading">周订单数走势</div>
                 <div class="panel-body">
                     <div class="canvas-wrapper">
-                        <canvas class="main-chart" id="line-chart" height="200" width="600"></canvas>
+                        <canvas class="main-chart" id="order-chart" height="200" width="600"></canvas>
                     </div>
                 </div>
             </div>
@@ -313,6 +311,41 @@ To change this template use File | Settings | File Templates.
     $(window).on('resize', function () {
         if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
     })
+</script>
+<script>
+    var orderNum = ${dayOrderArr};
+    var weekOrderChart = {
+        labels : ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        datasets : [
+        {
+            label: "完成订单数",
+            fillColor : "rgba(220,220,220,0.2)",
+            strokeColor : "rgba(220,220,220,1)",
+            pointColor : "rgba(220,220,220,1)",
+            pointStrokeColor : "#fff",
+            pointHighlightFill : "#fff",
+            pointHighlightStroke : "rgba(220,220,220,1)",
+            data : orderNum
+        },
+            {
+                label: "取消订单数",
+                fillColor : "rgba(48, 164, 255, 0.2)",
+                strokeColor : "rgba(48, 164, 255, 1)",
+                pointColor : "rgba(48, 164, 255, 1)",
+                pointStrokeColor : "#fff",
+                pointHighlightFill : "#fff",
+                pointHighlightStroke : "rgba(48, 164, 255, 1)",
+                data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+            }
+        ]
+
+    };
+    window.onload = function() {
+        var chart1 = document.getElementById("order-chart").getContext("2d");
+        window.myLine = new Chart(chart1).Line(weekOrderChart, {
+            responsive: true
+        });
+    }
 </script>
 </body>
 
