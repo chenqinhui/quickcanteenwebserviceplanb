@@ -4,6 +4,7 @@ import com.quickcanteen.mapper.CompanyInfoMapper;
 import com.quickcanteen.mapper.OrderMapper;
 import com.quickcanteen.model.CompanyInfo;
 import com.quickcanteen.model.Order;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,12 +30,13 @@ public class WebIndexController extends BaseController{
         Map map = weekResult();
         Double weekIncome = (Double) map.get("weekIncome");
         int weekOrder = (Integer)map.get("weekOrderNum");
-        int[] dayOrderArr = (int[])map.get("dayOrderArr");
+        Integer[] dayOrderArr = (Integer[])map.get("dayOrderArr");
+        String dayOrderString = "["+StringUtils.join(dayOrderArr,",")+"]";
         model.put("company_name",companyName);
         model.put("rating",rating);
         model.put("weekIncome",weekIncome);
         model.put("weekOrder",weekOrder);
-        model.put("dayOrderArr",dayOrderArr);
+        model.put("dayOrderString",dayOrderString);
         return "index";
     }
 
@@ -52,7 +54,10 @@ public class WebIndexController extends BaseController{
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         String startDateString = sdf.format(calendar.getTime());
 
-        int[] dayOrderArr = new int[7];
+        Integer[] dayOrderArr = new Integer[7];
+        for(int i=0;i<dayOrderArr.length;i++){
+            dayOrderArr[i]=0;
+        }
         int num = 0;
         List<Order> orderList = orderMapper.selectThisWeekOrderListByCompanyId(companyId);
         if(orderList!=null) {
