@@ -313,7 +313,9 @@ To change this template use File | Settings | File Templates.
     })
 </script>
 <script>
-    var orderNum = ${dayOrderArr};
+
+    var orderNum = ${dayOrderString};
+
     var weekOrderChart = {
         labels : ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
         datasets : [
@@ -325,7 +327,7 @@ To change this template use File | Settings | File Templates.
             pointStrokeColor : "#fff",
             pointHighlightFill : "#fff",
             pointHighlightStroke : "rgba(220,220,220,1)",
-            data : orderNum
+            data : ${dayOrderString}
         },
             {
                 label: "取消订单数",
@@ -335,7 +337,7 @@ To change this template use File | Settings | File Templates.
                 pointStrokeColor : "#fff",
                 pointHighlightFill : "#fff",
                 pointHighlightStroke : "rgba(48, 164, 255, 1)",
-                data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+                data : ${dayOrderString}
             }
         ]
 
