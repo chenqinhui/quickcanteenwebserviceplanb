@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lumino - Charts</title>
+<title>菜品管理系统</title>
 
 <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all"/>
 <link href="/css/datepicker3.css" rel="stylesheet" type="text/css" media="all"/>
