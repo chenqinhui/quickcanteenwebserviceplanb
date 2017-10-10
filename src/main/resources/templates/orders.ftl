@@ -43,23 +43,18 @@ To change this template use File | Settings | File Templates.
                            data-sort-order="desc">
                         <thead>
                         <tr>
-                            <th data-field="state" data-checkbox="true">菜品编号</th>
                             <th data-field="id" data-sortable="true">订单编号</th>
                             <th data-field="name" data-sortable="true">下单用户</th>
                             <th data-field="price" data-sortable="true">订单价格</th>
                             <th data-field="picture" data-sortable="true">订单状态</th>
                             <th data-field="modify" data-sortable="true">操作</th>
-
                         </tr>
-
                         </thead>
 
 
                         <tbody>
                         <#list orderList as order>
                         <tr>
-
-                            <td data-field="state" data-checkbox="true">菜品编号</td>
                             <td data-field="id" data-sortable="true"> ${order.orderId}</td>
                             <td data-field="name" data-sortable="true"><a
                                     href="">${order.userName}</a></td>
@@ -72,7 +67,7 @@ To change this template use File | Settings | File Templates.
                             </#list>
                             </td>
                             <td data-field="modify" data-sortable="true">
-                                <a href="/orders/${order.orderId?c}" target="_blank">
+                                <a data-toggle="modal" data-target="#myModal${order.orderId}">
                                     <span class="glyphicon glyphicon-align-justify"
                                           aria-hidden="true"></span>
                                 </a>
@@ -87,7 +82,6 @@ To change this template use File | Settings | File Templates.
             </div>
         </div>
     </div><!--/.row-->
-
 
     <script>
         $(function () {
@@ -119,9 +113,58 @@ To change this template use File | Settings | File Templates.
             return {};
         }
     </script>
-
-
+<#list orderList as order>
+    <div class="modal fade" style="width:800px ;height:900px " id="myModal${order.orderId}" tabindex="-1"
+         role="dialog" aria-labelledby="myModalLabel${order.orderId}">
+        <div class="modal-dialog" style="width:780px; " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel${order.orderId}">订单详情</h4>
+                </div>
+                <div class="modal-body" style="height: 400px">
+                    <div class="panel-body">
+                        <table data-toggle="table" data-url="tables/data1.json" data-show-refresh="true"
+                               data-show-toggle="true" data-show-columns="true" data-search="true"
+                               data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name"
+                               data-sort-order="desc">
+                            <thead>
+                            <tr>
+                                <th data-field="dishes_name" data-sortable="true">菜品名称</th>
+                                <th data-field="price" data-sortable="true">单价</th>
+                                <th data-field="count" data-sortable="true">数量</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <#if (order.dishesVos?size>0) >
+                                    <#list order.dishesVos as dishes>
+                                    <tr>
+                                        <td data-field="dishes_name" data-sortable="true">${dishes.dishesName}</td>
+                                        <td data-field="price" data-sortable="true">${dishes.price}</td>
+                                        <td data-field="count" data-sortable="true">${dishes.count}</td>
+                                    </tr>
+                                    </#list>
+                                </#if>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <input id="btn-input" type="text" class="form-control input-md" placeholder="Add new task"/>
+                        <span class="input-group-btn">
+								<button class="btn btn-primary btn-md" id="btn-todo">Add</button>
+							</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</#list>
 </div><!--/.main-->
+
 
 <script src="/js/jquery-1.11.1.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
@@ -147,102 +190,6 @@ To change this template use File | Settings | File Templates.
     })
 </script>
 <script type="text/javascript">
-    function edit(dishesId) {
-        var name = $("#name" + dishesId).val();
-        var price = $("#price" + dishesId).val();
-        var introduction = $("#introduction" + dishesId).val();
-
-        $.ajax({
-            type: "post",
-            url: "/api/company/edit",
-            timeout: 8000,
-            dataType: "json",
-            data: {
-                "dishesId": dishesId,
-                "name": name,
-                "price": price,
-                "introduction": introduction
-            },
-
-            success: function (data) {
-                if (data.returnCode === "0") {
-                    alert("修改失败");
-                }
-                else {
-                    alert("修改成功");
-                    window.location.href = "tables";
-                }
-            },
-
-            error: function () {
-                alert("请求出错")
-            }
-        })
-    }
-
-    function deletedishes(dishesId) {
-        if (confirm('确定要执行此操作吗?')) {
-            $.ajax({
-                type: "post",
-                url: "/api/company/delete",
-                timeout: 8000,
-                dataType: "json",
-                data: {
-                    "dishesId": dishesId
-                },
-                success: function (data) {
-                    if (data.returnCode === "0") {
-                        alert("删除失败");
-                    }
-                    else {
-                        alert("删除成功");
-                        window.location.href = "tables";
-                    }
-                },
-
-                error: function () {
-                    alert("请求出错")
-                }
-            })
-        }
-
-
-    }
-
-    function addDishes() {
-
-        var name = $("#name").val();
-        var price = $("#price").val();
-        var introduction = $("#introduction").val();
-
-
-        $.ajax({
-            type: "post",
-            url: "/api/company/add",
-            timeout: 8000,
-            dataType: "json",
-            data: {
-                "name": name,
-                "price": price,
-                "introduction": introduction
-            },
-            success: function (data) {
-                alert(data.returnCode);
-                if (data.returnCode === "0") {
-                    alert("添加失败");
-                }
-                else {
-                    alert("添加成功");
-                    window.location.href = "tables";
-                }
-            },
-
-            error: function () {
-                alert("请求出错")
-            }
-        })
-    }
-
     function uploadpic() {
         var picaddress = $("PictureFile").val();
         $.ajax({
