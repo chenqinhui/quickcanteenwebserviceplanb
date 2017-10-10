@@ -2,7 +2,6 @@ package com.quickcanteen.mapper;
 
 import com.quickcanteen.dto.DishesBean;
 import com.quickcanteen.model.Dishes;
-import com.quickcanteen.vo.DishesVo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -82,14 +81,6 @@ public interface DishesMapper {
     })
     @ResultMap("ResultMapForDishesBean")
     List<DishesBean> selectByOrderId(Integer orderId);
-
-    @Select({
-            "select dishes.*",
-            "from dishes natural join order_dishes",
-            "where order_id = #{orderId,jdbcType=INTEGER}"
-    })
-    @ResultMap("ResultMapWithBLOBs")
-    List<Dishes> selectDishesByOrderId(Integer orderId);
 
     @Select({
             "select *,'0' as count ",

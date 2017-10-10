@@ -2,14 +2,11 @@ package com.quickcanteen.controller.web;
 
 import com.quickcanteen.annotation.Authentication;
 import com.quickcanteen.constants.OrderStatus;
-import com.quickcanteen.dto.DishesBean;
 import com.quickcanteen.dto.Role;
 import com.quickcanteen.mapper.*;
 import com.quickcanteen.model.CompanyInfo;
 import com.quickcanteen.model.Dishes;
 import com.quickcanteen.model.Order;
-import com.quickcanteen.model.OrderDishesKey;
-import com.quickcanteen.vo.DishesVo;
 import com.quickcanteen.vo.OrderVo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.ResultMap;
@@ -17,14 +14,15 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -37,8 +35,9 @@ public class WebCompanyController extends BaseController {
     private static final String MODULE_WIDGETS = "widgets";
     private static final String MODULE_PANELS = "panels";
     private static final String MODULE_INDEX = "index";
+
     private static final String MODULE_ORDERS = "orders";
-    private static final String MODULE_ORDERDETAILS = "orderDetails";
+    private static final String MODULE_NAVIGATION = "navigation";
 
     @Autowired
     DishesMapper dishesMapper;
@@ -51,9 +50,6 @@ public class WebCompanyController extends BaseController {
 
     @Autowired
     private OrderMapper orderMapper;
-
-    @Autowired
-    private OrderDishesMapper orderDishesMapper;
 
     @RequestMapping(value = "/login")
     public String login(Map<String, Object> model) {
@@ -173,7 +169,6 @@ public class WebCompanyController extends BaseController {
         List<OrderVo> orderVos;
         if (status == 0) {
             orderVos = orderMapper.selectByCompanyId(getToken().getId(), new RowBounds()).stream().map(this::parse).collect(Collectors.toList());
-
         } else {
             model.put("status", OrderStatus.valueOf(status));
             orderVos = orderMapper.selectByOrderStatusAndCompanyId(getToken().getId(), status, new RowBounds()).stream().map(this::parse).collect(Collectors.toList());
@@ -186,40 +181,10 @@ public class WebCompanyController extends BaseController {
         return MODULE_ORDERS;
     }
 
-
-    @RequestMapping(value = "/orders/{orderId}", method = RequestMethod.GET)
-    @Authentication(Role.Company)
-    public String getDishesListByOrderId(@PathVariable("orderId")int orderId, Map<String, Object> model) {
-        List<DishesBean> dishesBeanList = new ArrayList<>();
-        dishesBeanList = dishesMapper.selectByOrderId(orderId);
-        int detail_result = dishesBeanList.size();
-        CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(getCurrentCompanyId());
-        String companyName = companyInfo.getCompanyName();
-        model.put("company_name",companyName);
-        model.put("dishesBeanList",dishesBeanList);
-        model.put("returnCode", String.valueOf(detail_result));
-        model.put("module", MODULE_ORDERDETAILS);
-        return MODULE_ORDERDETAILS;
-    }
-
     private OrderVo parse(Order order) {
         OrderVo result = new OrderVo();
         BeanUtils.copyProperties(order, result);
         result.setUserName(userInfoMapper.selectByPrimaryKey(order.getUserId()).getRealName());
-        List<Dishes> dishesList = dishesMapper.selectDishesByOrderId(result.getOrderId());
-        List<DishesVo> dishesVos = dishesList.stream().map(this::parse).collect(Collectors.toList());
-        for(DishesVo dishesVo :dishesVos){
-            OrderDishesKey orderDishesKey = new OrderDishesKey(result.getOrderId(),dishesVo.getDishesId());
-            dishesVo.setCount(orderDishesMapper.selectByPrimaryKey(orderDishesKey).getCount());
-        }
-        result.setDishesVos(dishesVos);
-        return result;
-    }
-
-    private DishesVo parse(Dishes dishes) {
-        DishesVo result = new DishesVo();
-        BeanUtils.copyProperties(dishes,result);
-        result.setCount(0);
         return result;
     }
 }

@@ -116,6 +116,7 @@ public class CompanyController extends APIBaseController {
         return result;
     }
 
+
     private TypeBean parse(Type type) {
         TypeBean typeBean = new TypeBean();
         try {

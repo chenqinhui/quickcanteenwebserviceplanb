@@ -1,13 +1,10 @@
 package com.quickcanteen.vo;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
-@NoArgsConstructor
 public class OrderVo {
     private Integer orderId;
 
@@ -26,7 +23,5 @@ public class OrderVo {
     private Integer timeslotId;
 
     private String userName;
-
-    private List<DishesVo> dishesVos;
 
 }
