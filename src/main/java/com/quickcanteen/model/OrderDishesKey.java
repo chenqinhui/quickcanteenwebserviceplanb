@@ -1,17 +1,23 @@
 package com.quickcanteen.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
 public class OrderDishesKey {
     private Integer orderId;
 
     private Integer dishesId;
 
-    public OrderDishesKey(Integer orderId,Integer dishesId){
-        this.dishesId=dishesId;
-        this.orderId=orderId;
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
+    public Integer getDishesId() {
+        return dishesId;
+    }
+
+    public void setDishesId(Integer dishesId) {
+        this.dishesId = dishesId;
     }
 }
