@@ -41,7 +41,7 @@ public class WebCompanyController extends BaseController {
     private static final String MODULE_PANELS = "panels";
     private static final String MODULE_INDEX = "index";
     private static final String MODULE_ORDERS = "orders";
-    private static final String MODULE_ORDERDETAILS = "orderDetails";
+    private static final String MODULE_PROFILE = "profile";
 
     @Autowired
     DishesMapper dishesMapper;
@@ -189,20 +189,15 @@ public class WebCompanyController extends BaseController {
         return MODULE_ORDERS;
     }
 
-
-    @RequestMapping(value = "/orders/{orderId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/profile")
     @Authentication(Role.Company)
-    public String getDishesListByOrderId(@PathVariable("orderId")int orderId, Map<String, Object> model) {
-        List<DishesBean> dishesBeanList = new ArrayList<>();
-        dishesBeanList = dishesMapper.selectByOrderId(orderId);
-        int detail_result = dishesBeanList.size();
+    public String profile(Map<String, Object> model) {
         CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(getCurrentCompanyId());
         String companyName = companyInfo.getCompanyName();
         model.put("company_name",companyName);
-        model.put("dishesBeanList",dishesBeanList);
-        model.put("returnCode", String.valueOf(detail_result));
-        model.put("module", MODULE_ORDERDETAILS);
-        return MODULE_ORDERDETAILS;
+        model.put("company_info",companyInfo);
+        model.put("module", MODULE_PROFILE);
+        return MODULE_PROFILE;
     }
 
     private OrderVo parse(Order order) {

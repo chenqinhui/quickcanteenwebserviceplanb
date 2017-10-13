@@ -27,7 +27,7 @@ To change this template use File | Settings | File Templates.
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">主页</h1>
+            <h1 class="page"></h1>
         </div>
     </div><!--/.row-->
 

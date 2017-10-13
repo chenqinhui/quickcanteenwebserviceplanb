@@ -28,10 +28,10 @@ To change this template use File | Settings | File Templates.
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                <input name="remember" type="checkbox" value="Remember Me">记住账号
                             </label>
                         </div>
-                        <div class="btn btn-primary" onclick="loginfuc();return false;">Login</div>
+                        <div class="btn btn-primary" onclick="loginfuc();return false;">登录</div>
                     </fieldset>
                 </form>
             </div>
@@ -89,7 +89,7 @@ To change this template use File | Settings | File Templates.
                 else{
                     alert("登录成功");
                     alert(data.token);
-                    $.cookie('X-TOKEN', data.token);
+                    $.cookie('X-TOKEN', data.token, { path: '/' });
                     window.location.href="index";
                 }
             },

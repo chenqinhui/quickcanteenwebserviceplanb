@@ -27,10 +27,9 @@ To change this template use File | Settings | File Templates.
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">订单显示</h1>
+            <h1 class="page"></h1>
         </div>
     </div><!--/.row-->
-
 
     <div class="row">
         <div class="col-lg-12">
@@ -67,7 +66,7 @@ To change this template use File | Settings | File Templates.
                             </#list>
                             </td>
                             <td data-field="modify" data-sortable="true">
-                                <a data-toggle="modal" data-target="#myModal${order.orderId}">
+                                <a data-toggle="modal" data-target="#myModal${order.orderId}" title="查看详情">
                                     <span class="glyphicon glyphicon-align-justify"
                                           aria-hidden="true"></span>
                                 </a>

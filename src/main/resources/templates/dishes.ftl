@@ -21,16 +21,15 @@ To change this template use File | Settings | File Templates.
     <div class="row">
         <ol class="breadcrumb">
             <li><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
-            <li class="active">Tables</li>
+            <li class="active">菜品显示</li>
         </ol>
     </div><!--/.row-->
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">菜品显示</h1>
+            <h1 class="page"></h1>
         </div>
     </div><!--/.row-->
-
 
     <div class="row">
         <div class="col-lg-12">
