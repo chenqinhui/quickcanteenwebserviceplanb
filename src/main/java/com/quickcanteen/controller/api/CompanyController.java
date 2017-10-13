@@ -1,10 +1,7 @@
 package com.quickcanteen.controller.api;
 
 import com.quickcanteen.annotation.Authentication;
-import com.quickcanteen.dto.BaseJson;
-import com.quickcanteen.dto.DishesBean;
-import com.quickcanteen.dto.Role;
-import com.quickcanteen.dto.TypeBean;
+import com.quickcanteen.dto.*;
 import com.quickcanteen.mapper.CompanyInfoMapper;
 import com.quickcanteen.mapper.DishesMapper;
 import com.quickcanteen.mapper.TypeMapper;
@@ -113,6 +110,21 @@ public class CompanyController extends APIBaseController {
         dishesMapper.insertSelective(dishes);
         int add_result = dishes.getDishesId();
         result.put("returnCode", String.valueOf(add_result));
+        return result;
+    }
+
+    @RequestMapping(value = "/editPassword", method = RequestMethod.POST)
+    @Authentication(Role.Company)
+    public Map editPassword(@RequestParam("oldPwd") String oldPwd, @RequestParam("newPwd") String newPwd) {
+        Map result = new HashMap();
+        int edit_result = 0;
+        CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(getToken().getId());
+        String currentPwd = companyInfo.getPassword();
+        if(currentPwd.equals(oldPwd)){
+             companyInfo.setPassword(newPwd);
+             edit_result = 1;
+        }
+        result.put("returnCode", String.valueOf(edit_result));
         return result;
     }
 

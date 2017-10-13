@@ -23,15 +23,17 @@ public class PostInterceptor extends BaseInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) throws Exception {
-        Token token = getToken(request);
-        if (token == null) return;
-        int companyId = token.getId();
-        Map<String, Integer> orderCountByStatus = Maps.newHashMap();
-        for (OrderStatus orderStatus : OrderStatus.values()) {
-            orderCountByStatus.put(orderStatus.getDesc(), orderMapper.countByStatusAndCompanyId(orderStatus.getValue(), companyId));
+        if (modelAndView != null) {
+            Token token = getToken(request);
+            if (token == null) return;
+            int companyId = token.getId();
+            Map<String, Integer> orderCountByStatus = Maps.newHashMap();
+            for (OrderStatus orderStatus : OrderStatus.values()) {
+                orderCountByStatus.put(orderStatus.getDesc(), orderMapper.countByStatusAndCompanyId(orderStatus.getValue(), companyId));
+            }
+            modelAndView.addObject("orderCountByStatus", orderCountByStatus);
+            modelAndView.addObject("statusList", OrderStatus.values());
         }
-        modelAndView.addObject("orderCountByStatus", orderCountByStatus);
-        modelAndView.addObject("statusList", OrderStatus.values());
     }
 
 
