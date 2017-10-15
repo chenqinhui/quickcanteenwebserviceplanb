@@ -2,6 +2,8 @@ package com.quickcanteen.controller.api;
 
 import com.google.common.collect.Lists;
 import com.quickcanteen.annotation.Authentication;
+import com.quickcanteen.constants.OrderStatus;
+import com.quickcanteen.constants.OrderStatusConstants;
 import com.quickcanteen.dto.BaseBean;
 import com.quickcanteen.dto.BaseJson;
 import com.quickcanteen.dto.OrderBean;
@@ -22,8 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.quickcanteen.constants.OrderStatusConstants.getMap;
 
 /**
  * Created by 11022 on 2017/8/20.
@@ -88,7 +93,12 @@ public class OrderController extends APIBaseController {
         if (order == null) {
             return getResourceNotFoundResult();
         } else {
-            order.setOrderStatus(orderStatus);
+            Map<OrderStatus, List<OrderStatus>> orderStatusListMap = OrderStatusConstants.getMap();
+            if (OrderStatusConstants.judgeChanging(OrderStatus.valueOf(order.getOrderStatus()), OrderStatus.valueOf(orderStatus), orderStatusListMap)) {
+                order.setOrderStatus(orderStatus);
+            } else {
+                return getWrongParamResult();
+            }
         }
         switch (getToken().getRole()) {
             case User:
