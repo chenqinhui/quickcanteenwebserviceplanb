@@ -42,7 +42,7 @@ To change this template use File | Settings | File Templates.
                            data-sort-order="desc">
                         <thead>
                         <tr>
-                            <th data-field="state" data-checkbox="true">菜品编号</th>
+                            <th data-field="available" data-sortable="true">上架状态</th>
                             <th data-field="id" data-sortable="true">菜品编号</th>
                             <th data-field="name" data-sortable="true">菜品名称</th>
                             <th data-field="price" data-sortable="true"> 菜品价格</th>
@@ -61,22 +61,27 @@ To change this template use File | Settings | File Templates.
                             <td data-field="null" data-sortable="true"></td>
                             <td data-field="null" data-sortable="true"></td>
                             <td data-field="null" data-sortable="true"></td>
-                            <td data-field="null" data-sortable="true"><img src="/image/add.svg" data-toggle="modal"
-                                                                            data-target="#myModal"></td>
+                            <td data-field="null" data-sortable="true">
+                                <a data-toggle="modal" data-target="#myModal" title="添加">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </a>
+                            </td>
                         </tr>
                         <#list dishesList as dishes>
                         <tr>
-
-                            <td data-field="state" data-checkbox="true">菜品编号</td>
+                            <td data-field="available" data-sortable="true"><#if (dishes.available==1)>上架</#if><#if (dishes.available==0)>已下架</#if></td>
                             <td data-field="id" data-sortable="true"> ${dishes.dishesId}</td>
                             <td data-field="name" data-sortable="true"><a
                                     href="detail?dishesId=${dishes.dishesId}">${dishes.dishesName}</a></td>
                             <td data-field="price" data-sortable="true">${dishes.price}</td>
                             <td data-field="picture" data-sortable="true">菜品图片</td>
-                            <td data-field="modify" data-sortable="true"><img src="/image/edit.svg" data-toggle="modal"
-                                                                              data-target="#myModal${dishes.dishesId}"><img
-                                    src="/image/close.svg" style="margin-left: 40px"
-                                    onclick="deletedishes(${dishes.dishesId});"></td>
+                            <td data-field="modify" data-sortable="true">
+                                <a data-toggle="modal" data-target="#myModal${dishes.dishesId}" title="编辑">
+                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                </a>
+                                <a title="删除" style="margin-left: 40px" onclick="deletedishes(${dishes.dishesId});">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </a>
                         </tr>
                         </#list>
                         </tbody>

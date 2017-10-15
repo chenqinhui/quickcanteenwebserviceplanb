@@ -20,13 +20,13 @@ public interface DishesMapper {
         "dishes_name, praise_num, ",
         "comment_num, collect_num, ",
         "publish_time, rating, ",
-        "dishes_introduce)",
+        "dishes_introduce, available)",
         "values (#{dishesId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER}, ",
         "#{price,jdbcType=DOUBLE}, #{diagrammaticSketchAddress,jdbcType=VARCHAR}, ",
         "#{dishesName,jdbcType=VARCHAR}, #{praiseNum,jdbcType=INTEGER}, ",
         "#{commentNum,jdbcType=INTEGER}, #{collectNum,jdbcType=INTEGER}, ",
         "#{publishTime,jdbcType=TIMESTAMP}, #{rating,jdbcType=DOUBLE}, ",
-        "#{dishesIntroduce,jdbcType=LONGVARCHAR})"
+        "#{dishesIntroduce,jdbcType=LONGVARCHAR},#{available,jdbcType=INTEGER})"
     })
     int insert(Dishes record);
 
@@ -35,7 +35,7 @@ public interface DishesMapper {
     @Select({
         "select",
         "dishes_id, company_id, price, diagrammatic_sketch_address, dishes_name, praise_num, ",
-        "comment_num, collect_num, publish_time, rating, dishes_introduce",
+        "comment_num, collect_num, publish_time, rating, dishes_introduce, available",
         "from dishes",
         "where dishes_id = #{dishesId,jdbcType=INTEGER}"
     })
@@ -55,7 +55,8 @@ public interface DishesMapper {
           "collect_num = #{collectNum,jdbcType=INTEGER},",
           "publish_time = #{publishTime,jdbcType=TIMESTAMP},",
           "rating = #{rating,jdbcType=DOUBLE},",
-          "dishes_introduce = #{dishesIntroduce,jdbcType=LONGVARCHAR}",
+          "dishes_introduce = #{dishesIntroduce,jdbcType=LONGVARCHAR},",
+          "available = #{available,jdbcType=INTEGER}",
         "where dishes_id = #{dishesId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKeyWithBLOBs(Dishes record);
@@ -71,6 +72,7 @@ public interface DishesMapper {
           "collect_num = #{collectNum,jdbcType=INTEGER},",
           "publish_time = #{publishTime,jdbcType=TIMESTAMP},",
           "rating = #{rating,jdbcType=DOUBLE}",
+          "available = #{available,jdbcType=INTEGER}",
         "where dishes_id = #{dishesId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(Dishes record);
@@ -94,7 +96,7 @@ public interface DishesMapper {
     @Select({
             "select *,'0' as count ",
             "from dishes natural join dishes_type",
-            "where type_id = #{typeId,jdbcType=INTEGER}"
+            "where type_id = #{typeId,jdbcType=INTEGER} and available = 1"
     })
     @ResultType(com.quickcanteen.dto.DishesBean.class)
     List<DishesBean> selectByTypeId(Integer typeId);

@@ -121,8 +121,9 @@ public class CompanyController extends APIBaseController {
         CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(getToken().getId());
         String currentPwd = companyInfo.getPassword();
         if(currentPwd.equals(oldPwd)){
-             companyInfo.setPassword(newPwd);
-             edit_result = 1;
+            companyInfo.setPassword(newPwd);
+            companyInfoMapper.updateByPrimaryKey(companyInfo);
+            edit_result = 1;
         }
         result.put("returnCode", String.valueOf(edit_result));
         return result;

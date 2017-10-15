@@ -166,34 +166,41 @@ To change this template use File | Settings | File Templates.
         var oldPwd = $("#old_pwd").val();
         var newPwd = $("#new_pwd").val();
         var newPwdAgain = $("#new_pwd_again").val();
-        if(newPwd!=newPwdAgain){
+        if(oldPwd==""||newPwd==""||newPwdAgain==""){
+            alert("密码不能为空");
+        }
+        else if(newPwd!=newPwdAgain){
             alert("两次密码输入不一致");
         }
+        else if(newPwd.length<6||newPwd.length>18){
+            alert("密码必须为6~18位");
+        }
+        else{
+            $.ajax({
+                type: "post",
+                url: "/api/company/editPassword",
+                timeout: 8000,
+                dataType: "json",
+                data: {
+                    "oldPwd": oldPwd,
+                    "newPwd": newPwd
+                },
 
-        $.ajax({
-            type: "post",
-            url: "/api/company/editPassword",
-            timeout: 8000,
-            dataType: "json",
-            data: {
-                "oldPwd": oldPwd,
-                "newPwd": newPwd
-            },
+                success: function (data) {
+                    if (data.returnCode === "0") {
+                        alert("修改失败，密码错误");
+                    }
+                    else {
+                        alert("修改成功");
+                        window.location.href = "profile";
+                    }
+                },
 
-            success: function (data) {
-                if (data.returnCode === "0") {
-                    alert("修改失败，密码错误");
+                error: function () {
+                    alert("请求出错");
                 }
-                else {
-                    alert("修改成功");
-                    window.location.href = "profile";
-                }
-            },
-
-            error: function () {
-                alert("请求出错");
-            }
-        })
+            })
+        }
     }
 </script>
 
