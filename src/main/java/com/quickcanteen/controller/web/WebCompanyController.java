@@ -9,6 +9,8 @@ import com.quickcanteen.model.CompanyInfo;
 import com.quickcanteen.model.Dishes;
 import com.quickcanteen.model.Order;
 import com.quickcanteen.model.OrderDishesKey;
+import com.quickcanteen.model.UserComment;
+import com.quickcanteen.vo.CommentVo;
 import com.quickcanteen.vo.DishesVo;
 import com.quickcanteen.vo.OrderVo;
 import org.apache.commons.lang.StringUtils;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
@@ -42,6 +45,7 @@ public class WebCompanyController extends BaseController {
     private static final String MODULE_INDEX = "index";
     private static final String MODULE_ORDERS = "orders";
     private static final String MODULE_PROFILE = "profile";
+    private static final String MODULE_COMMENTS = "comments";
 
     @Autowired
     DishesMapper dishesMapper;
@@ -57,6 +61,9 @@ public class WebCompanyController extends BaseController {
 
     @Autowired
     private OrderDishesMapper orderDishesMapper;
+
+    @Autowired
+    UserCommentMapper userCommentMapper;
 
     @RequestMapping(value = "/login")
     public String login(Map<String, Object> model) {
@@ -125,6 +132,35 @@ public class WebCompanyController extends BaseController {
         model.put("company_name", companyName);
         model.put("module", MODULE_FORMS);
         return MODULE_FORMS;
+    }
+
+    @RequestMapping(value = "/comments")
+    @Authentication(Role.Company)
+    public String comments(Map<String,Object> model) {
+        DecimalFormat df = new DecimalFormat("#.00");
+        int companyId = getCurrentCompanyId();
+        CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(companyId);
+        String companyName = companyInfo.getCompanyName();
+        model.put("company_name",companyName);
+        List<CommentVo> userComments = userCommentMapper.getCommentsByCompanyId(companyId, new RowBounds()).stream().map(this::parse).collect(Collectors.toList());
+        model.put("userComments",userComments);
+        model.put("commentsNumber",userComments.size());
+        List<CommentVo> goodUserComments = userCommentMapper.getGoodCommentsByCompanyId(companyId, new RowBounds()).stream().map(this::parse).collect(Collectors.toList());
+        model.put("goodUserComments",goodUserComments);
+        model.put("goodCommentsNumber",goodUserComments.size());
+        model.put("goodCommentsPercent",(int)(goodUserComments.size()*1.0/userComments.size()*100));
+        List<CommentVo> middleUserComments = userCommentMapper.getMiddleCommentsByCompanyId(companyId, new RowBounds()).stream().map(this::parse).collect(Collectors.toList());
+        model.put("middleUserComments",middleUserComments);
+        model.put("middleCommentsNumber",middleUserComments.size());
+        model.put("middleCommentsPercent",(int)(middleUserComments.size()*1.0/userComments.size()*100));
+        List<CommentVo> badUserComments = userCommentMapper.getBadCommentsByCompanyId(companyId, new RowBounds()).stream().map(this::parse).collect(Collectors.toList());
+        model.put("badUserComments",badUserComments);
+        model.put("badCommentsNumber",badUserComments.size());
+        model.put("badCommentsPercent",(int)(badUserComments.size()*1.0/userComments.size()*100));
+        model.put("avgRating",df.format(userCommentMapper.getRatingByCompanyId(companyId)));
+        model.put("avgRatingPer",(int)(userCommentMapper.getRatingByCompanyId(companyId)/5.0*100));
+        model.put("module", MODULE_COMMENTS);
+        return MODULE_COMMENTS;
     }
 
     @RequestMapping(value = "/detail")
@@ -220,4 +256,14 @@ public class WebCompanyController extends BaseController {
         result.setCount(0);
         return result;
     }
+
+    private CommentVo parse(UserComment comment) {
+        CommentVo result = new CommentVo();
+        BeanUtils.copyProperties(comment, result);
+        result.setCommenterName(userInfoMapper.selectByPrimaryKey(comment.getCommenterId()).getRealName());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        result.setCommentTimeStr(sdf.format(comment.getCommentTime()));
+        return result;
+    }
 }
+

@@ -27,6 +27,18 @@ public class UserInfo {
 
     private Integer points;
 
+    public UserInfo() {
+
+    }
+
+    public UserInfo(String accountNumber, String userPassword, String telephone, String realName,Date entranceYear) {
+        this.accountNumber = accountNumber;
+        this.userPassword = userPassword;
+        this.telephone = telephone;
+        this.realName = realName;
+        this.entranceYear = entranceYear;
+    }
+
     public Integer getUserId() {
         return userId;
     }
