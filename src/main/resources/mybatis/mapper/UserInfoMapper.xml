@@ -19,7 +19,7 @@
     user_id, account_number, user_password, head_portrait, nick_name, real_name, telephone, 
     entrance_year, college_name, university_name, is_admin, points
   </sql>
-  <insert id="insertSelective" parameterType="com.quickcanteen.model.UserInfo" >
+  <insert id="insertSelective" parameterType="com.quickcanteen.model.UserInfo" useGeneratedKeys="true" keyProperty="userId">
     insert into user_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="userId != null" >

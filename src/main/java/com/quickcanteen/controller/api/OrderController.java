@@ -2,10 +2,7 @@ package com.quickcanteen.controller.api;
 
 import com.google.common.collect.Lists;
 import com.quickcanteen.annotation.Authentication;
-import com.quickcanteen.dto.BaseBean;
-import com.quickcanteen.dto.BaseJson;
-import com.quickcanteen.dto.OrderBean;
-import com.quickcanteen.dto.Role;
+import com.quickcanteen.dto.*;
 import com.quickcanteen.mapper.*;
 import com.quickcanteen.model.Order;
 import com.quickcanteen.model.OrderDishes;
@@ -238,7 +235,8 @@ public class OrderController extends APIBaseController {
             BeanUtils.copyProperties(orderBean, order);
             orderBean.setCompanyName(companyInfoMapper.selectByPrimaryKey(orderBean.getCompanyId()).getCompanyName());
             orderBean.setTimeslot(orderBean.getTimeslotId() == 0 ? "" : getTimeSlotString(timeSlotMapper.selectByPrimaryKey(orderBean.getTimeslotId())));
-            orderBean.setDishesBeanList(dishesMapper.selectByOrderId(orderBean.getOrderId()));
+            List<DishesBean> dishesBeanList = dishesMapper.selectByOrderId(orderBean.getOrderId());
+            orderBean.setDishesBeanList(dishesBeanList.size() == 0 ? null : dishesBeanList);
         } catch (NullPointerException np) {
             logger.warn("unexpected companyId " + orderBean.getCompanyId());
         } catch (Exception e) {

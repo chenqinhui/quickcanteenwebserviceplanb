@@ -5,12 +5,13 @@
     <id column="comment_id" property="commentId" jdbcType="INTEGER" />
     <result column="commenter_id" property="commenterId" jdbcType="INTEGER" />
     <result column="rating" property="rating" jdbcType="DOUBLE" />
+    <result column="comment_time" property="commentTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.quickcanteen.model.UserComment" extends="BaseResultMap" >
     <result column="comment_content" property="commentContent" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    comment_id, commenter_id, rating
+    comment_id, commenter_id, rating, comment_time
   </sql>
   <sql id="Blob_Column_List" >
     comment_content
@@ -30,6 +31,9 @@
       <if test="commentContent != null" >
         comment_content,
       </if>
+      <if test="commentTime != null" >
+        comment_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="commentId != null" >
@@ -44,6 +48,9 @@
       <if test="commentContent != null" >
         #{commentContent,jdbcType=LONGVARCHAR},
       </if>
+      <if test="commentTime != null" >
+        #{commentTime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.quickcanteen.model.UserComment" >
@@ -57,6 +64,9 @@
       </if>
       <if test="commentContent != null" >
         comment_content = #{commentContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="commentTime != null" >
+        comment_time = #{commentTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where comment_id = #{commentId,jdbcType=INTEGER}

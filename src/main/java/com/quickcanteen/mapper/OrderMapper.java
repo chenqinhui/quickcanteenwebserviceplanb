@@ -4,6 +4,7 @@ import com.quickcanteen.model.Order;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.session.RowBounds;
 
+import java.util.Date;
 import java.util.List;
 
 public interface OrderMapper {
@@ -28,9 +29,9 @@ public interface OrderMapper {
     int insertSelective(Order record);
 
     @Select({
-        "select * ",
-        "from `order`",
-        "where order_id = #{orderId,jdbcType=INTEGER}"
+            "select * ",
+            "from `order`",
+            "where order_id = #{orderId,jdbcType=INTEGER}"
     })
     @ResultMap("BaseResultMap")
     Order selectByPrimaryKey(Integer orderId);
@@ -85,4 +86,34 @@ public interface OrderMapper {
             "where order_id = #{orderId,jdbcType=INTEGER}"
     })
     int updateTimeSlot(Order record);
+
+    @Select({
+            "select * ",
+            "from `order` ",
+            "where company_id = 1 and ",
+            "complete_time>(select subdate(curdate(),date_format(curdate(),'%w')-1)) ",
+            "and order_status!=80 order by publish_time desc"
+    })
+    @ResultMap("BaseResultMap")
+    List<Order> selectThisWeekOrderListByCompanyId(Integer companyId);
+
+
+    @Select("select count(*) from `order` where order_status = #{status} and company_id = #{companyId}")
+    int countByStatusAndCompanyId(@Param("status") int status, @Param("companyId") int companyId);
+
+    @Select({
+            "select * ",
+            "from `order`",
+            "where company_id = #{companyId} and order_status = #{status} order by publish_time desc"
+    })
+    @ResultMap("BaseResultMap")
+    List<Order> selectByOrderStatusAndCompanyId(@Param("companyId") Integer companyId, @Param("status") Integer status, RowBounds rowBounds);
+
+    @Select({
+            "select * ",
+            "from `order`",
+            "where company_id = #{companyId} order by publish_time desc"
+    })
+    @ResultMap("BaseResultMap")
+    List<Order> selectByCompanyId(@Param("companyId")Integer companyId, RowBounds rowBounds);
 }

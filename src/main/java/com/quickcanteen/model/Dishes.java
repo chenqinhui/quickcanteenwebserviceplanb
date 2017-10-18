@@ -1,7 +1,12 @@
 package com.quickcanteen.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
 
+@NoArgsConstructor
+@Data
 public class Dishes {
     private Integer dishesId;
 
@@ -25,88 +30,14 @@ public class Dishes {
 
     private String dishesIntroduce;
 
-    public Integer getDishesId() {
-        return dishesId;
-    }
+    private Integer available;
 
-    public void setDishesId(Integer dishesId) {
+    public Dishes(String name,Double price,String introduction,Integer dishesId){
         this.dishesId = dishesId;
-    }
-
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
+        this.dishesName = name;
         this.price = price;
-    }
-
-    public String getDiagrammaticSketchAddress() {
-        return diagrammaticSketchAddress;
-    }
-
-    public void setDiagrammaticSketchAddress(String diagrammaticSketchAddress) {
-        this.diagrammaticSketchAddress = diagrammaticSketchAddress == null ? null : diagrammaticSketchAddress.trim();
-    }
-
-    public String getDishesName() {
-        return dishesName;
-    }
-
-    public void setDishesName(String dishesName) {
-        this.dishesName = dishesName == null ? null : dishesName.trim();
-    }
-
-    public Integer getPraiseNum() {
-        return praiseNum;
-    }
-
-    public void setPraiseNum(Integer praiseNum) {
-        this.praiseNum = praiseNum;
-    }
-
-    public Integer getCommentNum() {
-        return commentNum;
-    }
-
-    public void setCommentNum(Integer commentNum) {
-        this.commentNum = commentNum;
-    }
-
-    public Integer getCollectNum() {
-        return collectNum;
-    }
-
-    public void setCollectNum(Integer collectNum) {
-        this.collectNum = collectNum;
-    }
-
-    public Date getPublishTime() {
-        return publishTime;
-    }
-
-    public void setPublishTime(Date publishTime) {
-        this.publishTime = publishTime;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
-    public String getDishesIntroduce() {
-        return dishesIntroduce;
+        this.dishesIntroduce = introduction;
+        this.available = 1;
     }
 
     public void setDishesIntroduce(String dishesIntroduce) {

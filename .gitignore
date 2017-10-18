@@ -1,7 +1,7 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 src/main/resources/application-dev.yml
-
+src/main/webapp/image
 ### STS ###
 .apt_generated
 .classpath
@@ -23,7 +23,3 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-src/main/resources/static/
-src/main/resources/templates/
-
-src/main/resources/application-dev.yml

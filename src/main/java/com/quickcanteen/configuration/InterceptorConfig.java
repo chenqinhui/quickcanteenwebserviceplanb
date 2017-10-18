@@ -17,6 +17,7 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter implements Applic
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor((HandlerInterceptor) context.getBean("authenticationInterceptor"));
+        registry.addInterceptor((HandlerInterceptor) context.getBean("postInterceptor"));
     }
 
     @Override

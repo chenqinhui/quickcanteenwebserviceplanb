@@ -69,4 +69,13 @@ public interface CompanyInfoMapper {
     })
     @ResultMap("BaseResultMap")
     List<CompanyInfo> searchCompany(@Param("keyword") String keyword);
+
+    @Select({
+            "select * ",
+            "from company_info " ,
+            "where account_number = #{accountNumber,jdbcType=VARCHAR}"
+    })
+    @ResultMap("BaseResultMap")
+    List<CompanyInfo> selectByAccountNumber(@Param("accountNumber")String accountNumber);
+
 }

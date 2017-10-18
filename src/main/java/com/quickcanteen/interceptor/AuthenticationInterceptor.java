@@ -21,10 +21,7 @@ import java.io.IOException;
 
 
 @Service("authenticationInterceptor")
-public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
-
-    @Autowired
-    private TokenService tokenService;
+public class AuthenticationInterceptor extends BaseInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
@@ -53,59 +50,6 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
             }
         } else {
             return true;
-        }
-    }
-
-    private void makeResponse(Object controller, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
-        if (controller.getClass().isAnnotationPresent(RestController.class) ||
-                controller.getClass().getSuperclass().isAnnotationPresent(RestController.class)) {
-            httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            BaseJson baseJson = new BaseJson();
-            baseJson.setReturnCode("E.1");
-            baseJson.setErrorMessage("没有权限");
-            JSONObject jsonObject = JSONObject.fromObject(baseJson);
-            httpServletResponse.setCharacterEncoding("UTF8");
-            httpServletResponse.getWriter().println(jsonObject.toString());
-        } else {
-            //httpServletResponse.sendRedirect("/signin?redirectUrl=" + httpServletRequest.getRequestURI());
-        }
-    }
-
-    private String getTokenFromHeaderOrCookie(HttpServletRequest request, String key) {
-        String header = getHeader(request, key);
-        if (header != null) {
-            return header;
-        }
-        String cookie = getCookie(request, key);
-        return cookie;
-    }
-
-    private String getHeader(HttpServletRequest request, String key) {
-        return request.getHeader(key);
-    }
-
-    private String getCookie(HttpServletRequest request, String cookieName) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            return null;
-        }
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(cookieName)) {
-                return cookie.getValue();
-            }
-        }
-        return null;
-    }
-
-    private Token getToken(HttpServletRequest request) {
-        String tokenString = getTokenFromHeaderOrCookie(request, "X-TOKEN");
-        if (tokenString == null) {
-            return null;
-        }
-        try {
-            return tokenService.parseToken(tokenString);
-        } catch (RuntimeException e) {
-            return null;
         }
     }
 }

@@ -1,0 +1,3 @@
+ALTER TABLE `dishes`
+MODIFY COLUMN `dishes_id`  int(11) NOT NULL AUTO_INCREMENT FIRST ,
+ADD COLUMN `available`  int(11) NOT NULL DEFAULT 1 AFTER `rating`;
