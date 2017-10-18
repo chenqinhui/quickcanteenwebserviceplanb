@@ -31,6 +31,7 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Controller
@@ -185,8 +186,8 @@ public class WebCompanyController extends BaseController {
     @RequestMapping(value = "/dishes")
     @Authentication(Role.Company)
     public String tables(Map<String, Object> model) {
-        List<Dishes> dishesList;
-        dishesList = dishesMapper.getDishesByCompanyId(getCurrentCompanyId());
+        List<DishesVo> dishesList;
+        dishesList = dishesMapper.getDishesByCompanyId(getCurrentCompanyId()).stream().map(this::parse).collect(Collectors.toList());
         CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(getCurrentCompanyId());
         String companyName = companyInfo.getCompanyName();
         model.put("company_name",companyName);
@@ -263,6 +264,7 @@ public class WebCompanyController extends BaseController {
         DishesVo result = new DishesVo();
         BeanUtils.copyProperties(dishes,result);
         result.setCount(0);
+        result.setCommentVos(userCommentMapper.getUserCommentsByDishId(dishes.getDishesId()).stream().map(this::parse).collect(Collectors.toList()));
         return result;
     }
 
