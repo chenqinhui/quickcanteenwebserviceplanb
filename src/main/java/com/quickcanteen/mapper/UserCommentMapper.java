@@ -96,4 +96,12 @@ public interface UserCommentMapper {
             "where company_id = #{companyId} "
     })
     double getRatingByCompanyId(@Param("companyId") Integer companyId);
+
+    @Select({
+            "select *",
+            "from user_comment natural join comment_dishes",
+            "where dishes_id = #{dishesId}"
+    })
+    @ResultMap("BaseResultMap")
+    List<UserComment> getUserCommentsByDishId(@Param("dishesId")Integer dishesId);
 }

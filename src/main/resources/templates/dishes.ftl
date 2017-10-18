@@ -69,10 +69,12 @@ To change this template use File | Settings | File Templates.
                         </tr>
                         <#list dishesList as dishes>
                         <tr>
-                            <td data-field="available" data-sortable="true"><#if (dishes.available==1)>上架</#if><#if (dishes.available==0)>已下架</#if></td>
+                            <td data-field="available" data-sortable="true"><#if (dishes.available==1)>
+                                上架</#if><#if (dishes.available==0)>已下架</#if></td>
                             <td data-field="id" data-sortable="true"> ${dishes.dishesId}</td>
-                            <td data-field="name" data-sortable="true"><a
-                                    href="detail?dishesId=${dishes.dishesId}">${dishes.dishesName}</a></td>
+                            <td data-field="name" data-sortable="true"><a data-toggle="modal"
+                                                                          data-target="#checkModal${dishes.dishesId}"
+                                                                          href="">${dishes.dishesName}</a></td>
                             <td data-field="price" data-sortable="true">${dishes.price}</td>
                             <td data-field="picture" data-sortable="true">菜品图片</td>
                             <td data-field="modify" data-sortable="true">
@@ -121,6 +123,62 @@ To change this template use File | Settings | File Templates.
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" onclick="edit('${dishes.dishesId}');">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</#list>
+
+<#list dishesList as dishes>
+    <div class="modal fade" style="width:800px ;height:1500px " id="checkModal${dishes.dishesId}" tabindex="-1"
+         role="dialog" aria-labelledby="myModalLabel${dishes.dishesId}">
+        <div class="modal-dialog" style="width:780px; " role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel${dishes.dishesId}">查看菜品</h4>
+                </div>
+                <div class="modal-body" style="height: 500px;overflow:auto">
+
+                    <p style="margin-left: 50px">菜名: ${dishes.dishesName}
+                    <p style="margin-left: 50px;margin-top: 30px">价格: ${dishes.price}
+                    <p style="margin-left: 50px;margin-top: 30px">介绍: ${dishes.dishesIntroduce}
+                    </p>
+                    <p style="margin-left: 50px;margin-top: 30px">评分: ${dishes.rating}
+                    <p style="margin-left: 50px;margin-top: 30px">图片 </p>
+                    <p style="margin-left: 50px;margin-top: 30px">下面是同学们的评价</p>
+                    <table data-toggle="table" data-url="tables/data1.json" data-show-refresh="true"
+                           data-show-toggle="true" data-show-columns="true" data-search="true"
+                           data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name"
+                           data-sort-order="desc">
+                        <thead>
+                        <tr>
+                            <th data-field="time" data-sortable="true">评价时间</th>
+                            <th data-field="name" data-sortable="false">评价用户</th>
+                            <th data-field="rating" data-sortable="true">评分</th>
+                            <th data-field="content" data-sortable="false"> 评价内容</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                            <#list dishes.commentVos as comments>
+                            <tr>
+                                <td data-field="time" data-sortable="true">${comments.commentTimeStr}</td>
+                                <td data-field="name" data-sortable="false">${comments.commenterName}</td>
+                                <td data-field="rating" data-sortable="true">${comments.rating}</td>
+                                <td data-field="content" data-sortable="false">${comments.commentContent}</td>
+                            </tr>
+                            </#list>
+                        </tbody>
+                    </table>
+                   <#-- <#list dishes.commentVos as comment>
+                        <p style="margin-left: 50px;margin-top: 30px">评论人:${comment.commenterName}</p>
+                        <p style="margin-left: 50px;margin-top: 30px">评分:${comment.rating}</p>
+                        <p style="margin-left: 50px;margin-top: 30px">评论: </p>
+                        <p style="margin-left: 50px;margin-top: 30px">${comment.commentContent}</p>
+                    </#list>-->
                 </div>
             </div>
         </div>
