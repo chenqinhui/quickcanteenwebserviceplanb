@@ -15,7 +15,7 @@
                 class="glyphicon glyphicon-dashboard"></span>主页</a></li>
         <li <#if module == "dishes">class="active"</#if>><a href="dishes"><span
                 class="glyphicon glyphicon-list-alt"></span> 菜品</a></li>
-        <li <#if module == "comments">class="active"</#if>><a href="panels"><span
+        <li <#if module == "comments">class="active"</#if>><a href="comments"><span
                 class="glyphicon glyphicon-comment"></span>用户评价</a></li>
         <li class="parent">
             <a href="orders">

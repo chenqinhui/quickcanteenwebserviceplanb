@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Date;
+
 /**
  * Created by 11022 on 2017/8/19.
  */
@@ -28,6 +30,29 @@ public class UserController extends APIBaseController {
 
     @Autowired
     private TokenService tokenService;
+
+    @RequestMapping(value = "/register")
+    public BaseJson register(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword, @RequestParam("telephone") String telephone, @RequestParam("realName") String realName) {
+        BaseJson baseJson = new BaseJson();
+        UserInfo userInfo = userInfoMapper.selectByAccountNumber(accountNumber);
+        if (userInfo != null) {
+            baseJson.setReturnCode("1.0.E.4");
+            baseJson.setErrorMessage("学号已经被注册");
+        } else {
+            int year = 2000 + Integer.parseInt(accountNumber.substring(2,4));
+            String date = String.valueOf(year) + "-09-01";
+            Date entranceYear = Date.valueOf(date);
+            userInfo = new UserInfo(accountNumber, userPassword, telephone, realName, entranceYear);
+            userInfoMapper.insertSelective(userInfo);
+            baseJson.setReturnCode("1.0");
+            baseJson.setErrorMessage("成功");
+            String token = tokenService.generateToken(Role.User, userInfo.getUserId());
+            BaseBean baseBean = new BaseBean();
+            baseBean.setSingleResult(token + " " + userInfo.getUserId());
+            baseJson.setObj(baseBean);
+        }
+        return baseJson;
+    }
 
     @RequestMapping(value = "/login")
     public BaseJson login(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword) {

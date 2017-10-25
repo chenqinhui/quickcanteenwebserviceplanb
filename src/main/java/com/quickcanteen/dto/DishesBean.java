@@ -20,6 +20,7 @@ public class DishesBean {
     private Double rating;
     private String dishesIntroduce;
     private Integer count;
+    private Integer available;
 
     public DishesBean() {
         this.count = 0;
@@ -38,6 +39,7 @@ public class DishesBean {
         this.rating = dishes.getRating();
         this.dishesIntroduce = dishes.getDishesIntroduce();
         this.count = 0;
+        this.available = dishes.getAvailable();
     }
 
     public Integer getDishesId() {
@@ -134,5 +136,13 @@ public class DishesBean {
 
     public void setPublishTime(Date publishTime) {
         this.publishTime = publishTime;
+    }
+
+    public Integer getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Integer available) {
+        this.available = available;
     }
 }

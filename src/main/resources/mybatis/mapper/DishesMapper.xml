@@ -12,6 +12,7 @@
         <result column="collect_num" property="collectNum" jdbcType="INTEGER"/>
         <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
         <result column="rating" property="rating" jdbcType="DOUBLE"/>
+        <result column="available" property="available" jdbcType="INTEGER"/>
     </resultMap>
     <resultMap id="ResultMapWithBLOBs" type="com.quickcanteen.model.Dishes" extends="BaseResultMap">
         <result column="dishes_introduce" property="dishesIntroduce" jdbcType="LONGVARCHAR"/>
@@ -21,7 +22,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         dishes_id, company_id, price, diagrammatic_sketch_address, dishes_name, praise_num,
-        comment_num, collect_num, publish_time, rating
+        comment_num, collect_num, publish_time, rating, available
     </sql>
     <sql id="Blob_Column_List">
         dishes_introduce
@@ -63,6 +64,9 @@
             <if test="dishesIntroduce != null">
                 dishes_introduce,
             </if>
+            <if test="available != null">
+                available = #{available},
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="dishesId != null">
@@ -98,6 +102,9 @@
             <if test="dishesIntroduce != null">
                 #{dishesIntroduce,jdbcType=LONGVARCHAR},
             </if>
+            <if test="available != null">
+                available = #{available},
+            </if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.quickcanteen.model.Dishes">
@@ -132,6 +139,9 @@
             </if>
             <if test="dishesIntroduce != null">
                 dishes_introduce = #{dishesIntroduce,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="available != null">
+                available = #{available},
             </if>
         </set>
         where dishes_id = #{dishesId,jdbcType=INTEGER}

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 @RestController
 @RequestMapping("/api/comment")
 public class CommentController extends APIBaseController {
@@ -35,7 +37,8 @@ public class CommentController extends APIBaseController {
                                 @RequestParam("rating") double rating,
                                 @RequestParam("isCompany") int isCompany) {
         BaseJson baseJson = new BaseJson();
-        UserComment userComment = new UserComment(userId, rating, commentContent);
+        Date commentTime = new Date();
+        UserComment userComment = new UserComment(userId, rating, commentContent, commentTime);
         userCommentMapper.insertSelective(userComment);
         int commentId = userComment.getCommentId();
         if (isCompany == 1) {
