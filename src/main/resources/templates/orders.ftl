@@ -173,6 +173,13 @@ To change this template use File | Settings | File Templates.
 <script src="/js/easypiechart-data.js"></script>
 <script src="/js/bootstrap-datepicker.js"></script>
 <script src="/js/bootstrap-table.js"></script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript">
+    function logout(){
+        $.removeCookie('X-TOKEN');
+        window.location.href = "login";
+    }
+</script>
 <script>
     !function ($) {
         $(document).on("click", "ul.nav li.parent > a > span.icon", function () {
