@@ -5,6 +5,7 @@ public enum Role {
 
     Admin,
     User,
-    Company
+    Company,
+    Stuff
 
 }

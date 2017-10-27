@@ -301,6 +301,13 @@
         if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
     })
 </script>
+<script src="/js/jquery.cookie.js"></script>
+<script type="text/javascript">
+    function logout() {
+        $.removeCookie('X-TOKEN');
+        window.location.href = "login";
+    }
+</script>
 </body>
 
 </html>

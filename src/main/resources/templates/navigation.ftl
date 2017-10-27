@@ -14,7 +14,7 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="profile"><span class="glyphicon glyphicon-user"></span> 用户信息</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-cog"></span> 设置</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> 注销</a></li>
+                        <li><a href="javascript:void " onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> 注销</a></li>
                     </ul>
                 </li>
             </ul>
