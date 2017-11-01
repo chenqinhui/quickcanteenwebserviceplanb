@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.quickcanteen.mapper.LocationMapper">
+    <resultMap id="BaseResultMap" type="com.quickcanteen.model.Location">
+        <id column="location_id" property="locationId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="longitude" property="longitude" jdbcType="DOUBLE"/>
+        <result column="latitude" property="latitude" jdbcType="DOUBLE"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.quickcanteen.model.Location" extends="BaseResultMap">
+        <result column="address" property="address" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        location_id, user_id, longitude, latitude
+    </sql>
+    <sql id="Blob_Column_List">
+        address
+    </sql>
+    <insert id="insertSelective" parameterType="com.quickcanteen.model.Location" useGeneratedKeys="true"
+            keyProperty="locationId">
+        insert into location
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="locationId != null">
+                location_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="longitude != null">
+                longitude,
+            </if>
+            <if test="latitude != null">
+                latitude,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="locationId != null">
+                #{locationId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="longitude != null">
+                #{longitude,jdbcType=DOUBLE},
+            </if>
+            <if test="latitude != null">
+                #{latitude,jdbcType=DOUBLE},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.quickcanteen.model.Location">
+        update location
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude,jdbcType=DOUBLE},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude,jdbcType=DOUBLE},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where location_id = #{locationId,jdbcType=INTEGER}
+    </update>
+</mapper>

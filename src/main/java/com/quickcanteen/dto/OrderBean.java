@@ -19,6 +19,9 @@ public class OrderBean {
     private Double totalPrice;
     private Integer timeslotId;
     private String timeslot;
+    private Integer deliverManId;
+    private Double deliverPrice;
+    private LocationBean locationBean;
     private List<DishesBean> dishesBeanList;
 
 }

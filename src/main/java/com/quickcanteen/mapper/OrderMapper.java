@@ -4,7 +4,6 @@ import com.quickcanteen.model.Order;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.session.RowBounds;
 
-import java.util.Date;
 import java.util.List;
 
 public interface OrderMapper {
@@ -18,18 +17,24 @@ public interface OrderMapper {
             "insert into `order` (order_id, user_id, ",
             "company_id, order_status, ",
             "publish_time, complete_time, ",
-            "total_price, timeslot_id)",
+            "total_price, timeslot_id, ",
+            "deliver_man_id, deliver_price, ",
+            "location_id)",
             "values (#{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, ",
             "#{companyId,jdbcType=INTEGER}, #{orderStatus,jdbcType=INTEGER}, ",
             "#{publishTime,jdbcType=TIMESTAMP}, #{completeTime,jdbcType=TIMESTAMP}, ",
-            "#{totalPrice,jdbcType=DOUBLE}, #{timeslotId,jdbcType=INTEGER})"
+            "#{totalPrice,jdbcType=DOUBLE}, #{timeslotId,jdbcType=INTEGER}, ",
+            "#{deliverManId,jdbcType=INTEGER}, #{deliverPrice,jdbcType=DOUBLE}, ",
+            "#{locationId,jdbcType=INTEGER})"
     })
     int insert(Order record);
 
     int insertSelective(Order record);
 
     @Select({
-            "select * ",
+            "select",
+            "order_id, user_id, company_id, order_status, publish_time, complete_time, total_price, ",
+            "timeslot_id, deliver_man_id, deliver_price, location_id",
             "from `order`",
             "where order_id = #{orderId,jdbcType=INTEGER}"
     })
@@ -46,7 +51,10 @@ public interface OrderMapper {
             "publish_time = #{publishTime,jdbcType=TIMESTAMP},",
             "complete_time = #{completeTime,jdbcType=TIMESTAMP},",
             "total_price = #{totalPrice,jdbcType=DOUBLE},",
-            "timeslot_id = #{timeslotId,jdbcType=INTEGER}",
+            "timeslot_id = #{timeslotId,jdbcType=INTEGER},",
+            "deliver_man_id = #{deliverManId,jdbcType=INTEGER},",
+            "deliver_price = #{deliverPrice,jdbcType=DOUBLE},",
+            "location_id = #{locationId,jdbcType=INTEGER}",
             "where order_id = #{orderId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(Order record);
@@ -92,7 +100,7 @@ public interface OrderMapper {
             "from `order` ",
             "where company_id = 1 and ",
             "complete_time>(select subdate(curdate(),date_format(curdate(),'%w')-1)) ",
-            "and order_status!=80 order by publish_time desc"
+            "and order_status != 80 order by publish_time desc"
     })
     @ResultMap("BaseResultMap")
     List<Order> selectThisWeekOrderListByCompanyId(Integer companyId);
@@ -115,5 +123,21 @@ public interface OrderMapper {
             "where company_id = #{companyId} order by publish_time desc"
     })
     @ResultMap("BaseResultMap")
-    List<Order> selectByCompanyId(@Param("companyId")Integer companyId, RowBounds rowBounds);
+    List<Order> selectByCompanyId(@Param("companyId") Integer companyId, RowBounds rowBounds);
+
+    @Select({
+            "select * ",
+            "from `order`",
+            "where order_status = 50 and deliver_man_id = 0 order by publish_time desc"
+    })
+    @ResultMap("BaseResultMap")
+    List<Order> selectNeedDeliver(RowBounds rowBounds);
+
+    @Select({
+            "select * ",
+            "from `order`",
+            "where deliver_man_id = #{userId} order by publish_time desc"
+    })
+    @ResultMap("BaseResultMap")
+    List<Order> selectDeliverOrders(@Param("userId") Integer userId, RowBounds rowBounds);
 }

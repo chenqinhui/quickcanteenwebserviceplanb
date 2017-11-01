@@ -2,17 +2,17 @@ package com.quickcanteen.controller.api;
 
 import com.google.common.collect.Lists;
 import com.quickcanteen.annotation.Authentication;
+import com.quickcanteen.constants.OrderStatus;
 import com.quickcanteen.dto.*;
 import com.quickcanteen.mapper.*;
-import com.quickcanteen.model.Order;
-import com.quickcanteen.model.OrderDishes;
-import com.quickcanteen.model.TimeSlot;
+import com.quickcanteen.model.*;
 import com.quickcanteen.util.DateUtils;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +39,10 @@ public class OrderController extends APIBaseController {
     private OrderDishesMapper orderDishesMapper;
     @Autowired
     private DishesMapper dishesMapper;
+    @Autowired
+    private UserInfoMapper userInfoMapper;
+    @Autowired
+    private LocationMapper locationMapper;
 
     @RequestMapping(value = "/getOrderById")
     @Authentication
@@ -117,6 +121,50 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
+    @RequestMapping(value = "/setOrderLocation")
+    @Authentication(Role.User)
+    public BaseJson setOrderLocation(@RequestParam("orderId") Integer orderId,
+                                     @RequestParam("locationId") Integer locationId) {
+        BaseJson baseJson = new BaseJson();
+        BaseBean baseBean = new BaseBean();
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        if (order == null) {
+            return getResourceNotFoundResult();
+        } else {
+            order.setLocationId(locationId);
+            order.setDeliverPrice(5.0);
+            orderMapper.updateByPrimaryKey(order);
+            baseBean.setSingleResult("0");
+            baseJson.setObj(baseBean);
+        }
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/askForDeliverOrder")
+    @Authentication(Role.User)
+    @Transactional
+    public BaseJson askForDeliverOrder(@RequestParam("orderId") Integer orderId,
+                                       @RequestParam("userID") Integer userID) {
+        BaseJson baseJson = new BaseJson();
+        BaseBean baseBean = new BaseBean();
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        if (order == null) {
+            return getResourceNotFoundResult();
+        } else if (order.getDeliverManId() != 0) {
+            baseJson.setErrorMessage("该单已经被接");
+            baseJson.setReturnCode("E");
+            baseBean.setSingleResult("0");
+        } else {
+            order.setDeliverManId(userID);
+            orderMapper.updateByPrimaryKey(order);
+            baseJson.setErrorMessage("接单成功");
+            baseJson.setReturnCode("");
+            baseBean.setSingleResult("1");
+        }
+        baseJson.setObj(baseBean);
+        return baseJson;
+    }
+
     @RequestMapping(value = "/updateTimeSlot")
     @Authentication
     public BaseJson updateTimeSlot(@RequestParam("orderId") Integer orderId,
@@ -184,6 +232,54 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
+    @RequestMapping(value = "/getNeedDeliverOrdersByPage")
+    @Authentication
+    public BaseJson getNeedDeliverOrdersByPage(@RequestParam("pageNumber") Integer pageNumber,
+                                               @RequestParam("pageSize") Integer pageSize) {
+        BaseJson baseJson = new BaseJson();
+        List<Order> orders = orderMapper.selectNeedDeliver(new RowBounds(pageNumber * pageSize, pageSize));
+        List<OrderBean> orderBeans = orders.stream().map(this::parse).collect(Collectors.toList());
+        switch (getToken().getRole()) {
+            case User:
+                if (userInfoMapper.selectByPrimaryKey(getToken().getId()).getDeliver()) {
+                    baseJson.setObj(orderBeans);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;
+            case Admin:
+                baseJson.setObj(orderBeans);
+                break;
+            default:
+                return getUnauthorizedResult();
+        }
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/getDeliverOrdersByPage")
+    @Authentication
+    public BaseJson getDeliverOrdersByPage(@RequestParam("pageNumber") Integer pageNumber,
+                                           @RequestParam("pageSize") Integer pageSize) {
+        BaseJson baseJson = new BaseJson();
+        List<Order> orders = orderMapper.selectDeliverOrders(getToken().getId(), new RowBounds(pageNumber * pageSize, pageSize));
+        List<OrderBean> orderBeans = orders.stream().map(this::parse).collect(Collectors.toList());
+        switch (getToken().getRole()) {
+            case User:
+                if (userInfoMapper.selectByPrimaryKey(getToken().getId()).getDeliver()) {
+                    baseJson.setObj(orderBeans);
+                } else {
+                    return getUnauthorizedResult();
+                }
+                break;
+            case Admin:
+                baseJson.setObj(orderBeans);
+                break;
+            default:
+                return getUnauthorizedResult();
+        }
+        return baseJson;
+    }
+
     @RequestMapping(value = "/placeOrder")
     @Authentication(Role.User)
     public BaseJson getOrderById(@RequestParam("companyID") int companyID,
@@ -223,6 +319,8 @@ public class OrderController extends APIBaseController {
             orderDishes.setOrderId(orderId);
             orderDishesMapper.insertSelective(orderDishes);
         }
+        order.setOrderStatus(OrderStatus.NOT_PAID.getValue());
+        orderMapper.updateOrderStatus(order);
         order = orderMapper.selectByPrimaryKey(order.getOrderId());
         baseJson.setObj(parse(order));
         return baseJson;
@@ -237,12 +335,20 @@ public class OrderController extends APIBaseController {
             orderBean.setTimeslot(orderBean.getTimeslotId() == 0 ? "" : getTimeSlotString(timeSlotMapper.selectByPrimaryKey(orderBean.getTimeslotId())));
             List<DishesBean> dishesBeanList = dishesMapper.selectByOrderId(orderBean.getOrderId());
             orderBean.setDishesBeanList(dishesBeanList.size() == 0 ? null : dishesBeanList);
+            Location location = locationMapper.selectByPrimaryKey(order.getLocationId());
+            orderBean.setLocationBean(location == null ? new LocationBean() : parse(location));
         } catch (NullPointerException np) {
             logger.warn("unexpected companyId " + orderBean.getCompanyId());
         } catch (Exception e) {
             e.printStackTrace();
         }
         return orderBean;
+    }
+
+    private LocationBean parse(Location location) {
+        LocationBean locationBean = new LocationBean();
+        org.springframework.beans.BeanUtils.copyProperties(location, locationBean);
+        return locationBean;
     }
 
     @RequestMapping(value = "/getTimeSlotByOrdersID")
