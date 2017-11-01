@@ -14,7 +14,6 @@ To change this template use File | Settings | File Templates.
 
 <body>
 <#include "navigation.ftl"/>
-
 <#include "sidebar.ftl"/>
 
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
@@ -70,6 +69,26 @@ To change this template use File | Settings | File Templates.
                                     <span class="glyphicon glyphicon-align-justify"
                                           aria-hidden="true"></span>
                                 </a>
+                                <#switch order.orderStatus>
+                                    <#case 100>
+                                        <button onclick="changeStatus('${order.orderId}','30');" class="btn">接单</button>
+                                        <button onclick="changeStatus('${order.orderId}','90');" class="btn">拒绝接单</button>
+                                        <#break >
+                                    <#case 30>
+                                        <#if order.timeslotId == 0 >
+                                            <button onclick="changeStatus('${order.orderId}','50');" class="btn">开始配送</button>
+                                        <#else >
+                                            <button onclick="changeStatus('${order.orderId}','40');" class="btn">到窗</button>
+                                        </#if>
+                                        <#break >
+                                    <#case 50>
+                                        <button onclick="changeStatus('${order.orderId}','60');" class="btn">确认送达</button
+                                        <#break >
+                                    <#case 40>
+                                        <button onclick="changeStatus('${order.orderId}','60');" class="btn">确认取餐</button>
+                                        <#break >
+                                    <#default>
+                                </#switch>
                             </td>
                         </tr>
                         </#list>
@@ -189,33 +208,52 @@ To change this template use File | Settings | File Templates.
     })
 </script>
 <script type="text/javascript">
-    function uploadpic() {
-        var picaddress = $("PictureFile").val();
+    function changeStatus(orderId, toStatus) {
+        alert(orderId);
         $.ajax({
             type: "post",
-            url: "/api/company/upload",
+            url: "/api/order/changeStatus",
             timeout: 8000,
             dataType: "json",
             data: {
-                "fileToUpload": picaddress
+                "orderId": orderId,
+                "toStatus": toStatus
             },
-
-            success: function (data) {
-                if (data.message == "uploadError") {
-                    alert("上传失败");
-                }
-                else {
-                    alert("上传成功");
-                }
+            success: function () {
+                alert("修改成功");
             },
-
             error: function () {
                 alert("请求出错")
             }
-
-
         })
     }
+        function uploadpic() {
+            var picaddress = $("PictureFile").val();
+            $.ajax({
+                type: "post",
+                url: "/api/company/upload",
+                timeout: 8000,
+                dataType: "json",
+                data: {
+                    "fileToUpload": picaddress
+                },
+
+                success: function (data) {
+                    if (data.message == "uploadError") {
+                        alert("上传失败");
+                    }
+                    else {
+                        alert("上传成功");
+                    }
+                },
+
+                error: function () {
+                    alert("请求出错")
+                }
+
+
+            })
+        }
 </script>
 
 </body>

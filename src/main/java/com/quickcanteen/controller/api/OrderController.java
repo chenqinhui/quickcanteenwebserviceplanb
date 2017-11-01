@@ -2,8 +2,11 @@ package com.quickcanteen.controller.api;
 
 import com.google.common.collect.Lists;
 import com.quickcanteen.annotation.Authentication;
+import com.quickcanteen.constants.OrderStatus;
+import com.quickcanteen.constants.OrderStatusConstants;
 import com.quickcanteen.dto.*;
 import com.quickcanteen.mapper.*;
+import com.quickcanteen.model.Dishes;
 import com.quickcanteen.model.Order;
 import com.quickcanteen.model.OrderDishes;
 import com.quickcanteen.model.TimeSlot;
@@ -14,12 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -75,6 +77,30 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
+    @RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
+    @Authentication(Role.Company)
+    public Map changeStatus(@RequestParam("orderId") String orderId, @RequestParam("toStatus") String toStatus) {
+        Map result = new HashMap();
+        Map<OrderStatus,List<OrderStatus>> map = new HashMap<>();
+        int edit_result = 0;
+        Order order = orderMapper.selectByPrimaryKey(Integer.parseInt(orderId));
+        if(order.getTimeslotId()==0)
+        {
+            map = OrderStatusConstants.getDistributingStatusMap();
+        }
+        else
+        {
+            map = OrderStatusConstants.getTakingStatusMap();
+        }
+        if(map.get(OrderStatus.valueOf(order.getOrderStatus())).contains(OrderStatus.valueOf(Integer.parseInt(toStatus)))) {
+            order.setOrderStatus(Integer.parseInt(toStatus));
+            orderMapper.updateOrderStatus(order);
+            edit_result = 1;
+        }
+        result.put("returnCode", String.valueOf(edit_result));
+        return result;
+    }
+
     @RequestMapping(value = "/updateOrderState")
     @Authentication
     public BaseJson updateOrderState(@RequestParam("orderId") Integer orderId,
@@ -82,9 +108,15 @@ public class OrderController extends APIBaseController {
         BaseJson baseJson = new BaseJson();
         BaseBean baseBean = new BaseBean();
         Order order = orderMapper.selectByPrimaryKey(orderId);
+        Map<OrderStatus,List<OrderStatus>> orderStatusListMap = OrderStatusConstants.getUserStatusMap();
         if (order == null) {
             return getResourceNotFoundResult();
-        } else {
+        }
+        else if(!orderStatusListMap.get(orderId).contains(orderStatus))
+        {
+            getWrongParamResult();
+        }
+        else {
             order.setOrderStatus(orderStatus);
         }
         switch (getToken().getRole()) {
