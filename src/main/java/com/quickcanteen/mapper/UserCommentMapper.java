@@ -35,6 +35,18 @@ public interface UserCommentMapper {
 
     int updateByPrimaryKeySelective(UserComment record);
 
+    @Select({
+            "select *",
+            "from user_comment where comment_id in (select comment_id from comment_dishes",
+            "where dishes_id = #{dishesId, jdbcType = INTEGER})"
+    })
+    @ResultMap("ResultMapWithBLOBs")
+    //List<UserComment> selectByDishesId(Integer dishesId);
+    //@ResultMap("BaseResultMap")
+    //List<UserComment> selectByDishesId(Integer dishesId);
+    List<UserComment> selectByDishesId(@Param("dishesId") Integer dishesId);
+
+
     @Update({
             "update user_comment",
             "set commenter_id = #{commenterId,jdbcType=INTEGER},",
