@@ -24,10 +24,11 @@ public interface CompanyInfoMapper {
     @Insert({
             "insert into company_info (company_id, company_name, ",
             "account_number, password, ",
-            "start_time, end_time)",
+            "start_time, end_time, busy_degree, rating, company_portrait)",
             "values (#{companyId,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, ",
             "#{accountNumber,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, ",
-            "#{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP})"
+            "#{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}), ",
+            "#{busyDegree}, #{rating}, #{companyPortrait} "
     })
     int insert(CompanyInfo record);
 
@@ -50,6 +51,9 @@ public interface CompanyInfoMapper {
             "password = #{password,jdbcType=VARCHAR},",
             "start_time = #{startTime,jdbcType=TIMESTAMP},",
             "end_time = #{endTime,jdbcType=TIMESTAMP}",
+            "busy_degree = #{busyDegree}",
+            "rating = #{rating}",
+            "company_portrait = #{companyPortrait}",
             "where company_id = #{companyId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(CompanyInfo record);

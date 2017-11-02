@@ -14,7 +14,6 @@ To change this template use File | Settings | File Templates.
 
 <body>
 <#include "navigation.ftl"/>
-
 <#include "sidebar.ftl"/>
 
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
@@ -70,6 +69,38 @@ To change this template use File | Settings | File Templates.
                                     <span class="glyphicon glyphicon-align-justify"
                                           aria-hidden="true"></span>
                                 </a>
+                                <#switch order.orderStatus>
+                                    <#case 100>
+                                        <a title="接受订单" onclick="changeStatus('${order.orderId}','30')" style="margin-left: 20px">
+                                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
+                                        </a>
+                                        <a title="拒绝接单" onclick="changeStatus('${order.orderId}','90')" style="margin-left: 20px">
+                                            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+                                        </a>
+                                        <#break >
+                                    <#case 30>
+                                        <#if order.timeslotId == 0 >
+                                            <a title="开始配送" onclick="changeStatus('${order.orderId}','50')" style="margin-left: 20px">
+                                                <span class="glyphicon glyphicon-road" aria-hidden="true"></span>
+                                            </a>
+                                        <#else >
+                                            <a title="到窗" onclick="changeStatus('${order.orderId}','40')" style="margin-left: 20px">
+                                                <span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>
+                                            </a>
+                                        </#if>
+                                        <#break >
+                                    <#case 50>
+                                        <a title="完成订单" onclick="changeStatus('${order.orderId}','60')" style="margin-left: 20px">
+                                            <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
+                                        </a>
+                                        <#break >
+                                    <#case 40>
+                                        <a title="完成订单" onclick="changeStatus('${order.orderId}','60')" style="margin-left: 20px">
+                                            <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
+                                        </a>
+                                        <#break >
+                                    <#default>
+                                </#switch>
                             </td>
                         </tr>
                         </#list>
@@ -189,33 +220,53 @@ To change this template use File | Settings | File Templates.
     })
 </script>
 <script type="text/javascript">
-    function uploadpic() {
-        var picaddress = $("PictureFile").val();
+    function changeStatus(orderId, toStatus) {
+        //alert(orderId);
         $.ajax({
             type: "post",
-            url: "/api/company/upload",
+            url: "/api/order/changeStatus",
             timeout: 8000,
             dataType: "json",
             data: {
-                "fileToUpload": picaddress
+                "orderId": orderId,
+                "toStatus": toStatus
             },
-
-            success: function (data) {
-                if (data.message == "uploadError") {
-                    alert("上传失败");
-                }
-                else {
-                    alert("上传成功");
-                }
+            success: function () {
+                alert("修改成功");
+                window.location.href = "orders";
             },
-
             error: function () {
                 alert("请求出错")
             }
-
-
         })
     }
+        function uploadpic() {
+            var picaddress = $("PictureFile").val();
+            $.ajax({
+                type: "post",
+                url: "/api/company/upload",
+                timeout: 8000,
+                dataType: "json",
+                data: {
+                    "fileToUpload": picaddress
+                },
+
+                success: function (data) {
+                    if (data.message == "uploadError") {
+                        alert("上传失败");
+                    }
+                    else {
+                        alert("上传成功");
+                    }
+                },
+
+                error: function () {
+                    alert("请求出错")
+                }
+
+
+            })
+        }
 </script>
 
 </body>

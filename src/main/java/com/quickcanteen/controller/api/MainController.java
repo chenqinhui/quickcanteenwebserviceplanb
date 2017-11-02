@@ -101,6 +101,8 @@ public class MainController extends APIBaseController {
     private DishesBean parse(Dishes dishes){
         DishesBean result=new DishesBean();
         BeanUtils.copyProperties(dishes,result);
+        CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(dishes.getCompanyId());
+        result.setCompanyName(companyInfo.getCompanyName());
         return result;
     }
 

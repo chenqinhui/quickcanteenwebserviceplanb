@@ -1,12 +1,15 @@
 package com.quickcanteen.dto;
 
 import com.quickcanteen.model.Dishes;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 /**
  * Created by 11022 on 2017/8/20.
  */
+@Data
 public class DishesBean {
     private Integer dishesId;
     private Integer companyId;
@@ -21,6 +24,7 @@ public class DishesBean {
     private String dishesIntroduce;
     private Integer count;
     private Integer available;
+    private String companyName;
 
     public DishesBean() {
         this.count = 0;
@@ -40,109 +44,6 @@ public class DishesBean {
         this.dishesIntroduce = dishes.getDishesIntroduce();
         this.count = 0;
         this.available = dishes.getAvailable();
-    }
-
-    public Integer getDishesId() {
-        return dishesId;
-    }
-
-    public void setDishesId(Integer dishesId) {
-        this.dishesId = dishesId;
-    }
-
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getDiagrammaticSketchAddress() {
-        return diagrammaticSketchAddress;
-    }
-
-    public void setDiagrammaticSketchAddress(String diagrammaticSketchAddress) {
-        this.diagrammaticSketchAddress = diagrammaticSketchAddress;
-    }
-
-    public String getDishesName() {
-        return dishesName;
-    }
-
-    public void setDishesName(String dishesName) {
-        this.dishesName = dishesName;
-    }
-
-    public String getDishesIntroduce() {
-        return dishesIntroduce;
-    }
-
-    public void setDishesIntroduce(String dishesIntroduce) {
-        this.dishesIntroduce = dishesIntroduce;
-    }
-
-    public Integer getPraiseNum() {
-        return praiseNum;
-    }
-
-    public void setPraiseNum(Integer praiseNum) {
-        this.praiseNum = praiseNum;
-    }
-
-    public Integer getCommentNum() {
-        return commentNum;
-    }
-
-    public void setCommentNum(Integer commentNum) {
-        this.commentNum = commentNum;
-    }
-
-    public Integer getCollectNum() {
-        return collectNum;
-    }
-
-    public void setCollectNum(Integer collectNum) {
-        this.collectNum = collectNum;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public Date getPublishTime() {
-        return publishTime;
-    }
-
-    public void setPublishTime(Date publishTime) {
-        this.publishTime = publishTime;
-    }
-
-    public Integer getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(Integer available) {
-        this.available = available;
+        this.companyName = null;
     }
 }

@@ -8,11 +8,12 @@
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
-    <result column="busy_degree" property="busyDegree" javaType="INTEGER" />
-    <result column="rating" property="rating" javaType="DOUBLE"/>
+    <result column="busy_degree" property="busyDegree" jdbcType="INTEGER" />
+    <result column="rating" property="rating" jdbcType="DOUBLE"/>
+    <result column="company_portrait" property="companyPortrait" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    company_id, company_name, account_number, password, start_time, end_time
+    company_id, company_name, account_number, password, start_time, end_time, company_portrait
   </sql>
   <insert id="insertSelective" parameterType="com.quickcanteen.model.CompanyInfo" >
     insert into company_info
@@ -35,6 +36,15 @@
       <if test="endTime != null" >
         end_time,
       </if>
+      <if test="busyDegree != null" >
+        busy_degree,
+      </if>
+      <if test="rating != null" >
+        rating,
+      </if>
+      <if test="companyPortrait != null" >
+        company_portrait,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="companyId != null" >
@@ -55,6 +65,15 @@
       <if test="endTime != null" >
         #{endTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="busyDegree != null" >
+        busy_degree,
+      </if>
+      <if test="rating != null" >
+        rating,
+      </if>
+      <if test="companyPortrait != null" >
+        company_portrait,
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.quickcanteen.model.CompanyInfo" >
@@ -74,6 +93,15 @@
       </if>
       <if test="endTime != null" >
         end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="busyDegree != null" >
+        busy_degree = #{busyDegree},
+      </if>
+      <if test="rating != null" >
+        rating = #{rating},
+      </if>
+      <if test="companyPortrait != null" >
+        company_portrait = #{companyPortrait},
       </if>
     </set>
     where company_id = #{companyId,jdbcType=INTEGER}
