@@ -7,6 +7,8 @@ import com.quickcanteen.mapper.DishesMapper;
 import com.quickcanteen.model.CompanyInfo;
 import com.quickcanteen.model.Dishes;
 import com.quickcanteen.util.ObjectParser;
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,20 +28,11 @@ public class DishesController extends APIBaseController{
 
     @RequestMapping(value = "/getCollectDishesListByUserId")
     @Authentication
-    public BaseJson getCollectDishesListByUserId(@RequestParam("userId") Integer userId) {
+    public BaseJson getCollectDishesListByUserId(@RequestParam("userId") Integer userId,@RequestParam("pageNumber")Integer pageNumber,@RequestParam("pageSize")Integer pageSize) {
         BaseJson baseJson = new BaseJson();
-        List<Dishes> collectDishesList= dishesMapper.getCollectDishesListByUserId(userId);
-        List<DishesBean> collectDishesBeanList = collectDishesList.stream().map(ObjectParser::parse).collect(Collectors.toList());
-        /*Set<CompanyInfoBean> companyInfoBeans = new HashSet<CompanyInfoBean>();
-        Set<SearchTypeBean> searchTypeBeans = new HashSet<SearchTypeBean>();
-        Set<DishesBean> dishesBeans = new HashSet<DishesBean>();
-
-        dishesBeans.addAll(collectDishesBeanList);
-
-        List<SearchBean> collectBeans = SearchBean.generate(companyInfoBeans, searchTypeBeans, dishesBeans);
-        collectBeans.forEach(collectBean -> collectBean.setCompanyInfoBean(ObjectParser.parse(companyInfoMapper.selectByPrimaryKey(collectBean.getCompanyId()))));
-        */
-        baseJson.setObj(collectDishesBeanList);
+        List<Dishes> collectDishesList= dishesMapper.getCollectDishesListByUserIdByPage(userId,new RowBounds(pageNumber*pageSize,pageSize));
+        List<DishesBean> collectDishesBeanList = collectDishesList.stream().map(this::parse).collect(Collectors.toList());
+        //baseJson.setObj(collectDishesBeanList);
 
         if(collectDishesBeanList.size() != 0) {
             baseJson.setObj(collectDishesBeanList);
@@ -52,6 +45,14 @@ public class DishesController extends APIBaseController{
             baseJson.setErrorMessage("没有收藏的菜品");
         }
         return baseJson;
+    }
+
+    private DishesBean parse(Dishes dishes){
+        DishesBean result=new DishesBean();
+        BeanUtils.copyProperties(dishes,result);
+        CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(dishes.getCompanyId());
+        result.setCompanyName(companyInfo.getCompanyName());
+        return result;
     }
 
 }

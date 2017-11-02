@@ -1,9 +1,11 @@
 package com.quickcanteen.vo;
 
+import com.quickcanteen.model.UserComment;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,5 +22,7 @@ public class DishesVo {
     private Double rating;
     private String dishesIntroduce;
     private Integer count;
+    private List<CommentVo>commentVos;
+    private Integer available;
 }
 

@@ -32,7 +32,7 @@ To change this template use File | Settings | File Templates.
     </div><!--/.row-->
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading"><span class="glyphicon glyphicon-user"></span>基本信息</div>
                 <div class="panel-body">
@@ -42,7 +42,7 @@ To change this template use File | Settings | File Templates.
                                 <label class="col-md-3 control-label" for="name">企业编号</label>
                                 <div class="col-md-9">
                                     <input id="id" name="id" type="text"
-                                           contenteditable="false" class="form-control"
+                                           contenteditable="false" class="form-control" disabled="false"
                                            value="${company_info.companyId}">
                                 </div>
                             </div>
@@ -59,7 +59,7 @@ To change this template use File | Settings | File Templates.
                             <div class="form-group">
                                 <label class="col-md-3 control-label" for="name">企业名</label>
                                 <div class="col-md-9">
-                                    <input id="name" name="name" type="text" placeholder="${company_info.companyName}"
+                                    <input id="name" name="name" type="text" placeholder="${company_info.companyName}" disabled="false"
                                            contenteditable="false" class="form-control">
                                 </div>
                             </div>
@@ -69,7 +69,7 @@ To change this template use File | Settings | File Templates.
                                 <label class="col-md-3 control-label" for="email">账号</label>
                                 <div class="col-md-9">
                                     <input id="email" name="email" type="text"
-                                           placeholder="${company_info.accountNumber}" contenteditable="false"
+                                           placeholder="${company_info.accountNumber}" contenteditable="false" disabled="false"
                                            class="form-control">
                                 </div>
                             </div>
@@ -87,39 +87,6 @@ To change this template use File | Settings | File Templates.
                     </form>
                 </div>
             </div>
-        </div><!--/.col-->
-
-        <div class="col-md-4">
-            <div class="panel panel-red">
-                <div class="panel-heading dark-overlay"><span class="glyphicon glyphicon-check"></span>重要待办事项</div>
-                <div class="panel-body">
-                    <ul class="todo-list">
-                        <li class="todo-list-item">
-                            <div class="checkbox">
-                                <input type="checkbox" id="checkbox"/>
-                                <label for="checkbox">接受订单</label>
-                            </div>
-                            <div class="pull-right action-buttons">
-                                <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <a href="#" class="flag"><span class="glyphicon glyphicon-flag"></span></a>
-                                <a href="#" class="trash"><span class="glyphicon glyphicon-trash"></span></a>
-                            </div>
-                        </li>
-                        <li class="todo-list-item">
-                            <div class="checkbox">
-                                <input type="checkbox" id="checkbox"/>
-                                <label for="checkbox">完成订单</label>
-                            </div>
-                            <div class="pull-right action-buttons">
-                                <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <a href="#" class="flag"><span class="glyphicon glyphicon-flag"></span></a>
-                                <a href="#" class="trash"><span class="glyphicon glyphicon-trash"></span></a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
         </div><!--/.col-->
     </div><!--/.row-->
     <div class="modal fade" style="width:800px ;height:900px " id="editPassword" tabindex="-1"
@@ -143,7 +110,6 @@ To change this template use File | Settings | File Templates.
                         <p style="margin-left: 50px;margin-top: 30px">确认新密码<input id="new_pwd_again"
                                                                                   style="width:120px; height:30px; margin-left: 40px"
                                                                                   type="text"/></p>
-<<<<<<< HEAD
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -196,20 +162,16 @@ To change this template use File | Settings | File Templates.
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary btn-md" type="button" onclick="fire_ajax_submit();return false;">提交
-=======
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary btn-md" type="button" onclick="editPassword();return false;">提交
->>>>>>> 619fe45d2ea0b05635e413c4b052cfd73355deae
                     </button>
                 </div>
 
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-=======
     <div class="modal fade" style="width:800px ;height:900px " id="uploadPortrait" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" style="width:780px; " role="document">
@@ -235,7 +197,6 @@ To change this template use File | Settings | File Templates.
             </div>
         </div>
     </div>
->>>>>>> 619fe45d2ea0b05635e413c4b052cfd73355deae
 </div>    <!--/.main-->
 
 

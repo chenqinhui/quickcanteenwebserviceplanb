@@ -78,15 +78,14 @@ public class MainController extends APIBaseController {
         List<Dishes> dishesList = dishesMapper.getDishesByUserId(userId);
         List<DishesBean> recommendList = new ArrayList<>();
         DishesBean dishesBean = new DishesBean();
-        for(int i=0;i<5;i++){
-            if(i<dishesList.size()) {
-                dishesBean = new DishesBean(dishesList.get(i));
-            }
-            else{
-                dishesBean = new DishesBean(dishesMapper.selectByPrimaryKey(i));
-            }
-            recommendList.add(dishesBean);
-        }
+        int dishesCount = dishesList.size();
+
+        //推荐5个菜，从用户最近点单中选择。如果最近点菜数不超过5个，则选择菜品中评分最高的补全。
+        int highRatingDishesCount = 5 - dishesList.size();
+        List<Dishes> highRatingDishesList = dishesMapper.selectHighRatingDishesByCount(highRatingDishesCount);
+        dishesList.addAll(highRatingDishesList);
+        recommendList = dishesList.stream().map(this::parse).collect(Collectors.toList());
+
         baseJson.setReturnCode("10.0");
         baseJson.setObj(recommendList);
         baseJson.setErrorMessage("成功");
@@ -98,4 +97,14 @@ public class MainController extends APIBaseController {
         BeanUtils.copyProperties(companyInfo,result);
         return result;
     }
+
+    private DishesBean parse(Dishes dishes){
+        DishesBean result=new DishesBean();
+        BeanUtils.copyProperties(dishes,result);
+        CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(dishes.getCompanyId());
+        result.setCompanyName(companyInfo.getCompanyName());
+        return result;
+    }
+
+
 }

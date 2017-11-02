@@ -65,7 +65,7 @@
                 dishes_introduce,
             </if>
             <if test="available != null">
-                available,
+                available = #{available},
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -103,7 +103,7 @@
                 #{dishesIntroduce,jdbcType=LONGVARCHAR},
             </if>
             <if test="available != null">
-                available,
+                available = #{available},
             </if>
         </trim>
     </insert>
@@ -141,7 +141,7 @@
                 dishes_introduce = #{dishesIntroduce,jdbcType=LONGVARCHAR},
             </if>
             <if test="available != null">
-                available,
+                available = #{available},
             </if>
         </set>
         where dishes_id = #{dishesId,jdbcType=INTEGER}

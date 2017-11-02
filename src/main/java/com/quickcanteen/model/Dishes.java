@@ -32,8 +32,9 @@ public class Dishes {
 
     private Integer available;
 
-    public Dishes(String name,Double price,String introduction,Integer dishesId){
+    public Dishes(String name,Double price,String introduction,Integer dishesId,Integer companyId){
         this.dishesId = dishesId;
+        this.companyId = companyId;
         this.dishesName = name;
         this.price = price;
         this.dishesIntroduce = introduction;

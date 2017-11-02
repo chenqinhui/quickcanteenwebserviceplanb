@@ -82,12 +82,16 @@ public class CompanyController extends APIBaseController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @Authentication(Role.Company)
     public Map edit(@RequestParam("name") String name, @RequestParam("price") Double price, @RequestParam("introduction") String introduction, @RequestParam("dishesId") int dishesId) {
         Map result = new HashMap();
-        Dishes dishes = new Dishes(name, price, introduction, dishesId);
+        int companyId = getToken().getId();
+        Dishes dishes = new Dishes(name, price, introduction, dishesId,companyId);
         int edit_result = 0;
-        edit_result = dishesMapper.updateByPrimaryKeySelective(dishes);
-        result.put("returnCode", String.valueOf(edit_result));
+
+        dishesMapper.updateByPrimaryKeySelective(dishes);
+        edit_result = 1;
+                result.put("returnCode", String.valueOf(edit_result));
         return result;
     }
 
@@ -101,15 +105,48 @@ public class CompanyController extends APIBaseController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @Authentication(Role.Company)
     public Map add(@RequestParam("name") String name, @RequestParam("price") Double price, @RequestParam("introduction") String introduction) {
         Map result = new HashMap();
+        int companyId = getToken().getId();
         Dishes dishes = new Dishes();
         dishes.setDishesName(name);
         dishes.setPrice(price);
         dishes.setDishesIntroduce(introduction);
+        dishes.setCompanyId(companyId);
         dishesMapper.insertSelective(dishes);
         int add_result = dishes.getDishesId();
         result.put("returnCode", String.valueOf(add_result));
+        return result;
+    }
+
+    @RequestMapping(value = "/pullOffDishes", method = RequestMethod.POST)
+    public Map pullOffDishes(@RequestParam("dishesId") int dishesId) {
+        Map result = new HashMap();
+        int pull_off_result = 0;
+        Dishes dishes = dishesMapper.selectByPrimaryKey(dishesId);
+        if(dishes.getAvailable()==1){
+            dishes.setAvailable(0);
+            pull_off_result = dishesMapper.updateByPrimaryKeyWithBLOBs(dishes);
+        }
+        else
+            pull_off_result = -1;
+        result.put("returnCode", String.valueOf(pull_off_result));
+        return result;
+    }
+
+    @RequestMapping(value = "/putOnDishes", method = RequestMethod.POST)
+    public Map putOnDishes(@RequestParam("dishesId") int dishesId) {
+        Map result = new HashMap();
+        int put_on_result = 0;
+        Dishes dishes = dishesMapper.selectByPrimaryKey(dishesId);
+        if(dishes.getAvailable()==0){
+            dishes.setAvailable(1);
+            put_on_result = dishesMapper.updateByPrimaryKeyWithBLOBs(dishes);
+        }
+        else
+            put_on_result =  -1;
+        result.put("returnCode", String.valueOf(put_on_result));
         return result;
     }
 

@@ -4,6 +4,7 @@ import com.quickcanteen.dto.DishesBean;
 import com.quickcanteen.model.Dishes;
 import com.quickcanteen.vo.DishesVo;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public interface DishesMapper {
     @ResultMap("ResultMapWithBLOBs")
     Dishes selectByPrimaryKey(Integer dishesId);
 
-    int updateByPrimaryKeySelective(Dishes record);
+    int  updateByPrimaryKeySelective(Dishes record);
 
     @Update({
         "update dishes",
@@ -115,7 +116,7 @@ public interface DishesMapper {
     @Select({
             "select dishes.* ",
             "from dishes ",
-            "where dishes_id in (select distinct(dishes_id) from `order` natural join order_dishes where user_id = 1)"
+            "where dishes_id in (select distinct(dishes_id) from `order` natural join order_dishes where user_id = #{userId})"
     })
     @ResultMap("BaseResultMap")
     List<Dishes> getDishesByUserId(int userId);
@@ -126,7 +127,7 @@ public interface DishesMapper {
             "where collector_id = #{userId}"
     })
     @ResultMap("BaseResultMap")
-    List<Dishes> getCollectDishesListByUserId(int userId);
+    List<Dishes> getCollectDishesListByUserIdByPage(int userId, RowBounds rowBounds);
 
     @Select({
             "select * ",
@@ -135,5 +136,13 @@ public interface DishesMapper {
     })
     @ResultMap("BaseResultMap")
     List<Dishes> getDishesByCompanyId(int companyId);
+
+    @Select({
+            "select * ",
+            "from dishes ",
+            "order by dishes.rating desc limit 0,#{count} "
+    })
+    @ResultMap("BaseResultMap")
+    List<Dishes> selectHighRatingDishesByCount(int count);
 
 }
