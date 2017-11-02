@@ -72,7 +72,7 @@ public interface DishesMapper {
           "comment_num = #{commentNum,jdbcType=INTEGER},",
           "collect_num = #{collectNum,jdbcType=INTEGER},",
           "publish_time = #{publishTime,jdbcType=TIMESTAMP},",
-          "rating = #{rating,jdbcType=DOUBLE}",
+            "rating = #{rating,jdbcType=DOUBLE},",
           "available = #{available,jdbcType=INTEGER}",
         "where dishes_id = #{dishesId,jdbcType=INTEGER}"
     })

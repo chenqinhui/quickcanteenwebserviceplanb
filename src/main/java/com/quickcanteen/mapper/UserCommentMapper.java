@@ -98,6 +98,13 @@ public interface UserCommentMapper {
     double getRatingByCompanyId(@Param("companyId") Integer companyId);
 
     @Select({
+            "select avg(rating) ",
+            "from user_comment natural join comment_dishes ",
+            "where dishes_id = #{dishesId} "
+    })
+    double getRatingByDishesId(@Param("dishesId") Integer dishesId);
+
+    @Select({
             "select *",
             "from user_comment natural join comment_dishes",
             "where dishes_id = #{dishesId}"
