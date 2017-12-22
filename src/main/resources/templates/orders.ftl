@@ -80,7 +80,7 @@ To change this template use File | Settings | File Templates.
                                         <#break >
                                     <#case 30>
                                         <#if order.timeslotId == 0 >
-                                            <a title="开始配送" onclick="changeStatus('${order.orderId}','50')" style="margin-left: 20px">
+                                            <a title="准备完成" onclick="changeStatus('${order.orderId}','110')" style="margin-left: 20px">
                                                 <span class="glyphicon glyphicon-road" aria-hidden="true"></span>
                                             </a>
                                         <#else >

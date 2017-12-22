@@ -28,7 +28,9 @@ public class OrderStatusConstants {
         if(distributingStatusMap.size()==0)
         {
             distributingStatusMap.put(OrderStatus.CHECKING, Lists.newArrayList(OrderStatus.CLOSED,OrderStatus.PREPARING));
-            distributingStatusMap.put(OrderStatus.PREPARING,Lists.newArrayList(OrderStatus.DISTRIBUTING));
+            //distributingStatusMap.put(OrderStatus.PREPARING,Lists.newArrayList(OrderStatus.DISTRIBUTING));
+            distributingStatusMap.put(OrderStatus.PREPARING,Lists.newArrayList(OrderStatus.PEND_TO_DISTRIBUTE));
+            distributingStatusMap.put(OrderStatus.PEND_TO_DISTRIBUTE,Lists.newArrayList(OrderStatus.DISTRIBUTING));
             distributingStatusMap.put(OrderStatus.DISTRIBUTING,Lists.newArrayList(OrderStatus.NOT_COMMENT));
         }
         return distributingStatusMap;

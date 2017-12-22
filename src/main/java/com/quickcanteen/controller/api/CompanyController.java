@@ -170,7 +170,14 @@ public class CompanyController extends APIBaseController {
         TypeBean typeBean = new TypeBean();
         try {
             BeanUtils.copyProperties(typeBean, type);
-            typeBean.setDishesBeanList(dishesMapper.selectByTypeId(type.getTypeId()));
+            List<DishesBean> dishesBeans = dishesMapper.selectByTypeId(type.getTypeId());
+            List<DishesBean> resultBeans = new ArrayList<>();
+            for(DishesBean dishesBean :dishesBeans){
+                if(dishesBean.getCompanyId().equals(type.getCompanyId()))
+                    resultBeans.add(dishesBean);
+            }
+            typeBean.setDishesBeanList(resultBeans);
+
         } catch (Exception e) {
 
         }
