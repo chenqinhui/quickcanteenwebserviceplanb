@@ -12,10 +12,7 @@ import com.quickcanteen.model.UserInfo;
 import com.quickcanteen.service.TokenService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 
@@ -31,8 +28,12 @@ public class UserController extends APIBaseController {
     @Autowired
     private TokenService tokenService;
 
-    @RequestMapping(value = "/register")
-    public BaseJson register(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword, @RequestParam("telephone") String telephone, @RequestParam("realName") String realName) {
+    @RequestMapping(value = "/register/{accountNumber}/{userPassword}/{telephone}/{realName}",
+                    method = RequestMethod.POST)
+    public BaseJson register(@PathVariable String accountNumber,
+                             @PathVariable String userPassword,
+                             @PathVariable String telephone,
+                             @PathVariable String realName) {
         BaseJson baseJson = new BaseJson();
         UserInfo userInfo = userInfoMapper.selectByAccountNumber(accountNumber);
         if (userInfo != null) {
@@ -54,8 +55,9 @@ public class UserController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/login")
-    public BaseJson login(@RequestParam("accountNumber") String accountNumber, @RequestParam("userPassword") String userPassword) {
+    @RequestMapping(value = "/login/{accountNumber}/{userPassword}",
+                    method = RequestMethod.GET)
+    public BaseJson login(@PathVariable String accountNumber, @PathVariable String userPassword) {
         BaseJson baseJson = new BaseJson();
         UserInfo userInfo = userInfoMapper.selectByAccountNumber(accountNumber);
         if (userInfo == null) {
@@ -75,10 +77,13 @@ public class UserController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/editPassword")
+    @RequestMapping(value = "/Password/{userIDString}/{userPassword}/{newPassword}",
+                    method = RequestMethod.PUT)
     @ResponseBody
     @Authentication({Role.User, Role.Admin})
-    public BaseJson editPassword(@RequestParam("userID") String userIDString, @RequestParam("userPassword") String userPassword, @RequestParam("newPassword") String newPassword) {
+    public BaseJson editPassword(@PathVariable String userIDString,
+                                 @PathVariable String userPassword,
+                                 @PathVariable String newPassword) {
         BaseJson baseJson = new BaseJson();
         int userID = Integer.parseInt(userIDString);
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userID);
@@ -120,10 +125,14 @@ public class UserController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/editUserInfo")
+    @RequestMapping(value = "/UserInfo/{userIDString}/{userPassword}/{infoType}/{correctInfo}",
+                    method = RequestMethod.PUT)
     @ResponseBody
     @Authentication({Role.User, Role.Admin})
-    public BaseJson editUserInfo(@RequestParam("userID") String userIDString, @RequestParam("userPassword") String userPassword, @RequestParam("infoType") String infoType, @RequestParam("correctInfo") String correctInfo) {
+    public BaseJson editUserInfo(@PathVariable String userIDString,
+                                 @PathVariable String userPassword,
+                                 @PathVariable String infoType,
+                                 @PathVariable String correctInfo) {
         BaseJson baseJson = new BaseJson();
         int userID = Integer.parseInt(userIDString);
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userID);
@@ -170,9 +179,9 @@ public class UserController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/getUserInfoByUserID")
+    @RequestMapping(value = "/UserInfo/{userID}",method = RequestMethod.GET)
     @Authentication({Role.User, Role.Admin})
-    public BaseJson getUserInfoByUserID(@RequestParam("userID") int userID) {
+    public BaseJson getUserInfoByUserID(@PathVariable int userID) {
         BaseJson baseJson = new BaseJson();
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userID);
         switch (getToken().getRole()) {
@@ -193,9 +202,9 @@ public class UserController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/signUpForDeliver")
+    @RequestMapping(value = "/Deliver/{userID}", method = RequestMethod.PUT)
     @Authentication({Role.User, Role.Admin})
-    public BaseJson signUpForDeliver(@RequestParam("userID") int userID) {
+    public BaseJson signUpForDeliver(@PathVariable int userID) {
         BaseJson baseJson = new BaseJson();
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userID);
         if (!userInfo.getDeliver()) {

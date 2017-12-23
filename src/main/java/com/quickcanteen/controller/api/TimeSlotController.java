@@ -6,6 +6,7 @@ import com.quickcanteen.mapper.TimeSlotMapper;
 import com.quickcanteen.model.TimeSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class TimeSlotController {
     @Autowired
     private TimeSlotMapper timeSlotMapper;
-    @RequestMapping(value = "/getAllTimeSlots")
+    @RequestMapping(value = "/getAllTimeSlots",method = RequestMethod.GET)
     @Authentication
     public BaseJson getAllTimeSlots() {
         BaseJson baseJson = new BaseJson();

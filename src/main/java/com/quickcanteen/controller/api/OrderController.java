@@ -14,10 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -45,9 +42,9 @@ public class OrderController extends APIBaseController {
     @Autowired
     private LocationMapper locationMapper;
 
-    @RequestMapping(value = "/getOrderById")
+    @RequestMapping(value = "/Order/{orderId}", method = RequestMethod.GET)
     @Authentication
-    public BaseJson getOrderById(@RequestParam("orderId") Integer orderId) {
+    public BaseJson getOrderById(@PathVariable Integer orderId) {
         BaseJson baseJson = new BaseJson();
         Order order = orderMapper.selectByPrimaryKey(orderId);
         if (order == null) {
@@ -80,9 +77,9 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
+    @RequestMapping(value = "/Status/{orderId}/{toStatus}", method = RequestMethod.POST)
     @Authentication(Role.Company)
-    public Map changeStatus(@RequestParam("orderId") String orderId, @RequestParam("toStatus") String toStatus) {
+    public Map changeStatus(@PathVariable String orderId, @PathVariable String toStatus) {
         Map result = new HashMap();
         Map<OrderStatus,List<OrderStatus>> map = new HashMap<>();
         int edit_result = 0;
@@ -104,10 +101,10 @@ public class OrderController extends APIBaseController {
         return result;
     }
 
-    @RequestMapping(value = "/updateOrderState")
+    @RequestMapping(value = "/OrderState/{orderId}/{orderStatus}", method = RequestMethod.PUT)
     @Authentication
-    public BaseJson updateOrderState(@RequestParam("orderId") Integer orderId,
-                                     @RequestParam("orderStatus") Integer orderStatus) {
+    public BaseJson updateOrderState(@PathVariable Integer orderId,
+                                     @PathVariable Integer orderStatus) {
         BaseJson baseJson = new BaseJson();
         BaseBean baseBean = new BaseBean();
         Order order = orderMapper.selectByPrimaryKey(orderId);
@@ -160,11 +157,12 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/setOrderLocationAndDeliverPrice")
+    @RequestMapping(value = "/OrderLocationAndDeliverPrice/{orderId}/{locationId}/{deliverPrice}",
+                    method = RequestMethod.POST)
     @Authentication(Role.User)
-    public BaseJson setOrderLocation(@RequestParam("orderId") Integer orderId,
-                                     @RequestParam("locationId") Integer locationId,
-                                     @RequestParam("deliverPrice") Double deliverPrice) {
+    public BaseJson setOrderLocation(@PathVariable Integer orderId,
+                                     @PathVariable Integer locationId,
+                                     @PathVariable Double deliverPrice) {
         BaseJson baseJson = new BaseJson();
         BaseBean baseBean = new BaseBean();
         Order order = orderMapper.selectByPrimaryKey(orderId);
@@ -182,11 +180,12 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/askForDeliverOrder")
+    @RequestMapping(value = "/DeliverOrder/{orderId}/{userID}",
+                    method = RequestMethod.POST)
     @Authentication(Role.User)
     @Transactional
-    public BaseJson askForDeliverOrder(@RequestParam("orderId") Integer orderId,
-                                       @RequestParam("userID") Integer userID) {
+    public BaseJson askForDeliverOrder(@PathVariable Integer orderId,
+                                       @PathVariable Integer userID) {
         BaseJson baseJson = new BaseJson();
         BaseBean baseBean = new BaseBean();
         Order order = orderMapper.selectByPrimaryKey(orderId);
@@ -208,11 +207,12 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/completeDeliverOrder")
+    @RequestMapping(value = "/DeliverOrder/{orderId}/{userID}",
+                    method = RequestMethod.POST)
     @Authentication(Role.User)
     @Transactional
-    public BaseJson completeDeliverOrder(@RequestParam("orderId") Integer orderId,
-                                       @RequestParam("userID") Integer userID) {
+    public BaseJson completeDeliverOrder(@PathVariable Integer orderId,
+                                       @PathVariable Integer userID) {
         BaseJson baseJson = new BaseJson();
         BaseBean baseBean = new BaseBean();
         Order order = orderMapper.selectByPrimaryKey(orderId);
@@ -230,10 +230,11 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/payWithTimeSlot")
+    @RequestMapping(value = "/TimeSlot/{orderId}/{timeSlot}",
+                    method = RequestMethod.PUT)
     @Authentication(Role.User)
-    public BaseJson payWithTimeSlot(@RequestParam("orderId") Integer orderId,
-                                   @RequestParam("timeSlot") Integer orderTimeSlot) {
+    public BaseJson payWithTimeSlot(@PathVariable Integer orderId,
+                                   @PathVariable Integer orderTimeSlot) {
         BaseJson baseJson = new BaseJson();
         BaseBean baseBean = new BaseBean();
         Order order = orderMapper.selectByPrimaryKey(orderId);
@@ -264,11 +265,12 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/getOrdersListByUserIDByPage")
+    @RequestMapping(value = "/OrderList/{userID}/{pageNumber}/{pageSize}",
+                    method = RequestMethod.GET)
     @Authentication
-    public BaseJson getOrdersListByUserIDByPage(@RequestParam("userID") Integer userId,
-                                                @RequestParam("pageNumber") Integer pageNumber,
-                                                @RequestParam("pageSize") Integer pageSize) {
+    public BaseJson getOrdersListByUserIDByPage(@PathVariable Integer userId,
+                                                @PathVariable Integer pageNumber,
+                                                @PathVariable Integer pageSize) {
         BaseJson baseJson = new BaseJson();
         List<Order> orders = orderMapper.selectByUserId(userId, new RowBounds(pageNumber * pageSize, pageSize));
         List<OrderBean> orderBeans = orders.stream().map(this::parse).collect(Collectors.toList());
@@ -289,10 +291,11 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/getNeedDeliverOrdersByPage")
+    @RequestMapping(value = "/NeedDeliverOrders/{pageNumber}/{pageSize}",
+                    method = RequestMethod.GET)
     @Authentication
-    public BaseJson getNeedDeliverOrdersByPage(@RequestParam("pageNumber") Integer pageNumber,
-                                               @RequestParam("pageSize") Integer pageSize) {
+    public BaseJson getNeedDeliverOrdersByPage(@PathVariable Integer pageNumber,
+                                               @PathVariable Integer pageSize) {
         BaseJson baseJson = new BaseJson();
         int userId = getToken().getId();
         List<Order> orders = orderMapper.selectNeedDeliver(getToken().getId(),new RowBounds(pageNumber * pageSize, pageSize));
@@ -314,10 +317,11 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/getDeliverOrdersByPage")
+    @RequestMapping(value = "/DeliverOrders/{pageNumber}/{pageSize}",
+                    method = RequestMethod.GET)
     @Authentication
-    public BaseJson getDeliverOrdersByPage(@RequestParam("pageNumber") Integer pageNumber,
-                                           @RequestParam("pageSize") Integer pageSize) {
+    public BaseJson getDeliverOrdersByPage(@PathVariable Integer pageNumber,
+                                           @PathVariable Integer pageSize) {
         BaseJson baseJson = new BaseJson();
         List<Order> orders = orderMapper.selectDeliverOrders(getToken().getId(), new RowBounds(pageNumber * pageSize, pageSize));
         List<OrderBean> orderBeans = orders.stream().map(this::parse).collect(Collectors.toList());
@@ -338,12 +342,13 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/placeOrder")
+    @RequestMapping(value = "/Order/{companyID}/{totalPrice}/dishesIDList/{dishesCountList}",
+                    method = RequestMethod.GET)
     @Authentication(Role.User)
-    public BaseJson getOrderById(@RequestParam("companyID") int companyID,
-                                 @RequestParam("totalPrice") double totalPrice,
-                                 @RequestParam("dishesIDList") String dishesIDList,
-                                 @RequestParam("dishesCountList") String dishesCountList) {
+    public BaseJson getOrderById(@PathVariable int companyID,
+                                 @PathVariable double totalPrice,
+                                 @PathVariable String dishesIDList,
+                                 @PathVariable String dishesCountList) {
         BaseJson baseJson = new BaseJson();
         List<Integer> dishesIDs = Lists.newArrayList(dishesIDList.split("_")).stream().map(Integer::parseInt).collect(Collectors.toList());
         List<Integer> dishesCounts = Lists.newArrayList(dishesCountList.split("_")).stream().map(Integer::parseInt).collect(Collectors.toList());
@@ -413,9 +418,9 @@ public class OrderController extends APIBaseController {
         return locationBean;
     }
 
-    @RequestMapping(value = "/getTimeSlotByOrdersID")
+    @RequestMapping(value = "/TimeSlot/{ordersID}",method = RequestMethod.GET)
     @Authentication
-    public BaseJson getTimeSlotByOrdersID(@RequestParam("ordersID") Integer ordersID) {
+    public BaseJson getTimeSlotByOrdersID(@PathVariable Integer ordersID) {
         String timeSlotString;
         TimeSlot timeSlot;
         BaseJson baseJson = new BaseJson();
@@ -446,9 +451,9 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/updateFinishTime")
+    @RequestMapping(value = "/FinishTime/{orderId}",method = RequestMethod.PUT)
     @Authentication
-    public BaseJson updateFinishTime(@RequestParam("orderId") Integer ordersID) {
+    public BaseJson updateFinishTime(@PathVariable Integer ordersID) {
         BaseJson baseJson = new BaseJson();
         Order order = orderMapper.selectByPrimaryKey(ordersID);
         order.setCompleteTime(new Date());
@@ -481,9 +486,9 @@ public class OrderController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/updateStartTime")
+    @RequestMapping(value = "/StartTime/{orderId}",method = RequestMethod.PUT)
     @Authentication
-    public BaseJson updateStartTime(@RequestParam("orderId") Integer ordersID) {
+    public BaseJson updateStartTime(@PathVariable Integer ordersID) {
         BaseJson baseJson = new BaseJson();
         Order order = orderMapper.selectByPrimaryKey(ordersID);
         order.setPublishTime(new Date());

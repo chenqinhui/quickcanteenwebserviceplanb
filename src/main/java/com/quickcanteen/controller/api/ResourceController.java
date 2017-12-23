@@ -7,13 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.Map;
@@ -35,9 +32,9 @@ public class ResourceController extends APIBaseController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/upload")
+    @RequestMapping(method = RequestMethod.POST, value = "/upload/{file}/{companyId}")
     @ResponseBody
-    public Map<String, Object> handleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("companyId") Integer companyId) {
+    public Map<String, Object> handleFileUpload(@PathVariable MultipartFile file, @PathVariable Integer companyId) {
         Map<String, Object> map = Maps.newHashMap();
         if (!file.isEmpty()) {
             try {

@@ -6,9 +6,7 @@ import com.quickcanteen.mapper.DishesMapper;
 import com.quickcanteen.mapper.TypeMapper;
 import com.quickcanteen.util.ObjectParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,8 +26,8 @@ public class SearchController extends APIBaseController {
     @Autowired
     private DishesMapper dishesMapper;
 
-    @RequestMapping(value = "/searchByText")
-    public BaseJson getUserInfoByUserID(@RequestParam("searchText") String searchText) {
+    @RequestMapping(value = "/UserInfo/{searchText}",method = RequestMethod.GET)
+    public BaseJson getUserInfoByUserID(@PathVariable String searchText) {
         String[] strings = searchText.split("\\s+");
         Set<CompanyInfoBean> companyInfoBeans = new HashSet<CompanyInfoBean>();
         Set<SearchTypeBean> searchTypeBeans = new HashSet<SearchTypeBean>();

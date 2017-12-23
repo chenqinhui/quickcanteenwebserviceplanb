@@ -1,30 +1,20 @@
 package com.quickcanteen.controller.api;
 
+import com.quickcanteen.annotation.Authentication;
 import com.quickcanteen.dto.BaseJson;
 import com.quickcanteen.dto.CompanyInfoBean;
-import com.quickcanteen.annotation.Authentication;
-import com.quickcanteen.controller.api.APIBaseController;
 import com.quickcanteen.dto.DishesBean;
 import com.quickcanteen.mapper.CompanyInfoMapper;
 import com.quickcanteen.mapper.DishesMapper;
 import com.quickcanteen.model.CompanyInfo;
 import com.quickcanteen.model.Dishes;
-import com.quickcanteen.model.Order;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,9 +30,9 @@ public class MainController extends APIBaseController {
     @Autowired
     private DishesMapper dishesMapper;
 
-    @RequestMapping(value = "/getCompanyInfoByPage")
+    @RequestMapping(value = "/CompanyInfo/{pageNumber}/{pageSize}", method = RequestMethod.GET)
     @Authentication
-    public BaseJson getCompanyInfoByPage(@RequestParam("pageNumber")int pageNumber, @RequestParam("pageSize")int pageSize) {
+    public BaseJson getCompanyInfoByPage(@PathVariable int pageNumber,@PathVariable int pageSize) {
         BaseJson baseJson = new BaseJson();
         List<CompanyInfo> companyInfoList = companyInfoMapper.getCompanyInfoByPage(new RowBounds(pageNumber*pageSize,pageSize));
         List<CompanyInfoBean> companyInfoBeans= companyInfoList.stream().map(this::parse).collect(Collectors.toList());
@@ -71,9 +61,9 @@ public class MainController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/getRecommendListByUserId")
+    @RequestMapping(value = "/RecommendList/{userId}", method = RequestMethod.GET)
     @Authentication
-    public BaseJson getRecommendListByUserId(@RequestParam("userId") int userId){
+    public BaseJson getRecommendListByUserId(@PathVariable int userId){
         BaseJson baseJson = new BaseJson();
         List<Dishes> dishesList = dishesMapper.getDishesByUserId(userId);
         List<DishesBean> recommendList = new ArrayList<>();
