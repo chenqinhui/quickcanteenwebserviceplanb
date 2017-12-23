@@ -69,7 +69,7 @@
         busy_degree,
       </if>
       <if test="rating != null" >
-        rating,
+        #{rating,jdbcType=DOUBLE},
       </if>
       <if test="companyPortrait != null" >
         company_portrait,
@@ -98,7 +98,7 @@
         busy_degree = #{busyDegree},
       </if>
       <if test="rating != null" >
-        rating = #{rating},
+        rating = #{rating,jdbcType=DOUBLE},
       </if>
       <if test="companyPortrait != null" >
         company_portrait = #{companyPortrait},

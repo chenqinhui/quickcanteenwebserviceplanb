@@ -1,23 +1,17 @@
 package com.quickcanteen.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class CollectDishesKey {
     private Integer dishesId;
 
     private Integer collectorId;
 
-    public Integer getDishesId() {
-        return dishesId;
-    }
-
-    public void setDishesId(Integer dishesId) {
-        this.dishesId = dishesId;
-    }
-
-    public Integer getCollectorId() {
-        return collectorId;
-    }
-
-    public void setCollectorId(Integer collectorId) {
-        this.collectorId = collectorId;
-    }
+   public CollectDishesKey(int dishesId,int collectorId){
+       this.dishesId = dishesId;
+       this.collectorId = collectorId;
+   }
 }

@@ -11,6 +11,8 @@ import java.util.List;
 public class OrderBean {
     private Integer orderId;
     private Integer userId;
+    private String userRealName;
+    private String userTelephone;
     private Integer companyId;
     private String companyName;
     private Integer orderStatus;
@@ -19,6 +21,9 @@ public class OrderBean {
     private Double totalPrice;
     private Integer timeslotId;
     private String timeslot;
+    private Integer deliverManId;
+    private Double deliverPrice;
+    private LocationBean locationBean;
     private List<DishesBean> dishesBeanList;
 
 }

@@ -50,9 +50,9 @@ public interface CompanyInfoMapper {
             "account_number = #{accountNumber,jdbcType=VARCHAR},",
             "password = #{password,jdbcType=VARCHAR},",
             "start_time = #{startTime,jdbcType=TIMESTAMP},",
-            "end_time = #{endTime,jdbcType=TIMESTAMP}",
-            "busy_degree = #{busyDegree}",
-            "rating = #{rating}",
+            "end_time = #{endTime,jdbcType=TIMESTAMP},",
+            "busy_degree = #{busyDegree},",
+            "rating = #{rating,jdbcType=DOUBLE},",
             "company_portrait = #{companyPortrait}",
             "where company_id = #{companyId,jdbcType=INTEGER}"
     })

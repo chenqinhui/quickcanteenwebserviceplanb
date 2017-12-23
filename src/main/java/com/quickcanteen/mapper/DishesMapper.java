@@ -4,6 +4,7 @@ import com.quickcanteen.dto.DishesBean;
 import com.quickcanteen.model.Dishes;
 import com.quickcanteen.vo.DishesVo;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -71,7 +72,7 @@ public interface DishesMapper {
           "comment_num = #{commentNum,jdbcType=INTEGER},",
           "collect_num = #{collectNum,jdbcType=INTEGER},",
           "publish_time = #{publishTime,jdbcType=TIMESTAMP},",
-          "rating = #{rating,jdbcType=DOUBLE}",
+            "rating = #{rating,jdbcType=DOUBLE},",
           "available = #{available,jdbcType=INTEGER}",
         "where dishes_id = #{dishesId,jdbcType=INTEGER}"
     })
@@ -126,7 +127,7 @@ public interface DishesMapper {
             "where collector_id = #{userId}"
     })
     @ResultMap("BaseResultMap")
-    List<Dishes> getCollectDishesListByUserId(int userId);
+    List<Dishes> getCollectDishesListByUserIdByPage(int userId, RowBounds rowBounds);
 
     @Select({
             "select * ",

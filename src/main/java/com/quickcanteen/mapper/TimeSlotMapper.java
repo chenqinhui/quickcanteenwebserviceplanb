@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 public interface TimeSlotMapper {
     @Delete({
         "delete from time_slot",
@@ -42,4 +44,11 @@ public interface TimeSlotMapper {
         "where time_slot_id = #{timeSlotId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(TimeSlot record);
+
+    @Select({
+            "select * ",
+            "from time_slot"
+    })
+    @ResultMap("BaseResultMap")
+    List<TimeSlot> selectAll();
 }

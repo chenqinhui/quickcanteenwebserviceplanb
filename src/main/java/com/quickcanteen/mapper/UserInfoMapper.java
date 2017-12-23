@@ -20,13 +20,15 @@ public interface UserInfoMapper {
         "nick_name, real_name, ",
         "telephone, entrance_year, ",
         "college_name, university_name, ",
-        "is_admin, points)",
+        "is_admin, points, ",
+        "deliver)",
         "values (#{userId,jdbcType=INTEGER}, #{accountNumber,jdbcType=VARCHAR}, ",
         "#{userPassword,jdbcType=VARCHAR}, #{headPortrait,jdbcType=VARCHAR}, ",
         "#{nickName,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, ",
         "#{telephone,jdbcType=VARCHAR}, #{entranceYear,jdbcType=DATE}, ",
         "#{collegeName,jdbcType=VARCHAR}, #{universityName,jdbcType=VARCHAR}, ",
-        "#{isAdmin,jdbcType=INTEGER}, #{points,jdbcType=INTEGER})"
+        "#{isAdmin,jdbcType=INTEGER}, #{points,jdbcType=INTEGER}, ",
+        "#{deliver,jdbcType=BIT})"
     })
     int insert(UserInfo record);
 
@@ -35,7 +37,7 @@ public interface UserInfoMapper {
     @Select({
         "select",
         "user_id, account_number, user_password, head_portrait, nick_name, real_name, ",
-        "telephone, entrance_year, college_name, university_name, is_admin, points",
+        "telephone, entrance_year, college_name, university_name, is_admin, points, deliver",
         "from user_info",
         "where user_id = #{userId,jdbcType=INTEGER}"
     })
@@ -56,7 +58,8 @@ public interface UserInfoMapper {
           "college_name = #{collegeName,jdbcType=VARCHAR},",
           "university_name = #{universityName,jdbcType=VARCHAR},",
           "is_admin = #{isAdmin,jdbcType=INTEGER},",
-          "points = #{points,jdbcType=INTEGER}",
+          "points = #{points,jdbcType=INTEGER},",
+          "deliver = #{deliver,jdbcType=BIT}",
         "where user_id = #{userId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(UserInfo record);

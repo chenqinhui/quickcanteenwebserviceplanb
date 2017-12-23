@@ -42,9 +42,8 @@ public interface TypeMapper {
     int updateByPrimaryKey(Type record);
 
     @Select({
-            "select",
-            "type_id, type_name, company_id",
-            "from type",
+            "select type_id, type_name , company_id ",
+            "from type ",
             "where company_id = #{companyId,jdbcType=INTEGER}"
     })
     @ResultMap("BaseResultMap")

@@ -1,8 +1,11 @@
 package com.quickcanteen.mapper;
 
+import com.quickcanteen.model.CollectDishes;
 import com.quickcanteen.model.CollectDishesKey;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Select;
 
 public interface CollectDishesMapper {
     @Delete({
@@ -17,6 +20,14 @@ public interface CollectDishesMapper {
         "values (#{dishesId,jdbcType=INTEGER}, #{collectorId,jdbcType=INTEGER})"
     })
     int insert(CollectDishesKey record);
+
+    @Select({
+            "select * ",
+            "from collect_dishes ",
+            "where dishes_id = #{dishesId} and collector_id = #{collectorId} "
+    })
+    CollectDishes selectByPrimaryKey(CollectDishesKey record);
+
 
     int insertSelective(CollectDishesKey record);
 }

@@ -39,7 +39,7 @@ public class UserController extends APIBaseController {
             baseJson.setReturnCode("1.0.E.4");
             baseJson.setErrorMessage("学号已经被注册");
         } else {
-            int year = 2000 + Integer.parseInt(accountNumber.substring(2,4));
+            int year = 2000 + Integer.parseInt(accountNumber.substring(2, 4));
             String date = String.valueOf(year) + "-09-01";
             Date entranceYear = Date.valueOf(date);
             userInfo = new UserInfo(accountNumber, userPassword, telephone, realName, entranceYear);
@@ -190,6 +190,24 @@ public class UserController extends APIBaseController {
                 return getUnauthorizedResult();
         }
         baseJson.setReturnCode("4.0");
+        return baseJson;
+    }
+
+    @RequestMapping(value = "/signUpForDeliver")
+    @Authentication({Role.User, Role.Admin})
+    public BaseJson signUpForDeliver(@RequestParam("userID") int userID) {
+        BaseJson baseJson = new BaseJson();
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userID);
+        if (!userInfo.getDeliver()) {
+            userInfo.setDeliver(true);
+            userInfoMapper.updateByPrimaryKeySelective(userInfo);
+            baseJson.setObj(parse(userInfo));
+            baseJson.setReturnCode("4.0");
+        } else {
+            baseJson.setObj(parse(userInfo));
+            baseJson.setReturnCode("4.0.E.1");
+            baseJson.setErrorMessage("你已经申请过了");
+        }
         return baseJson;
     }
 
