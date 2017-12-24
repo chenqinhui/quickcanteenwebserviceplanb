@@ -29,7 +29,7 @@ public class GetCommentController extends APIBaseController {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
-    @RequestMapping(value = "/comment" , method = RequestMethod.GET)
+    @RequestMapping(value = "" , method = RequestMethod.GET)
     //@Authentication(Role.User)
     @Authentication
     public BaseJson getCommentByDishesId(@RequestParam("dishesId") Integer dishesId) {
