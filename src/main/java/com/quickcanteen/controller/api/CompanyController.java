@@ -36,9 +36,9 @@ public class CompanyController extends APIBaseController {
     @Autowired
     private DishesMapper dishesMapper;
 
-    @RequestMapping(value = "/getCompanyInfoById")
+    @RequestMapping(value = "/v/api/company", method = RequestMethod.GET)
     @Authentication
-    public BaseJson getCompanyInfoById(@RequestParam("companyID") Integer companyID) {
+    public BaseJson getCompanyInfoById(@PathVariable("companyID") Integer companyID) {
         BaseJson baseJson = new BaseJson();
         CompanyInfo companyInfo = companyInfoMapper.selectByPrimaryKey(companyID);
         if (Objects.isNull(companyInfo)) {
@@ -49,9 +49,9 @@ public class CompanyController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/getTypesAndDishesByCompanyId")
+    @RequestMapping(value = "/v/api/type/dishes" ,method = RequestMethod.GET)
     @Authentication
-    public BaseJson getTypesAndDishesByCompanyId(@RequestParam("companyID") Integer companyID) {
+    public BaseJson getTypesAndDishesByCompanyId(@PathVariable("companyID") Integer companyID) {
         BaseJson baseJson = new BaseJson();
         List<TypeBean> typeBeans = typeMapper.selectByCompanyId(companyID).stream().map(this::parse).collect(Collectors.toList());
         baseJson.setObj(typeBeans);

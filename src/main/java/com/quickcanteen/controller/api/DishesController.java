@@ -14,6 +14,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +33,7 @@ public class DishesController extends APIBaseController{
     @Autowired
     private CollectDishesMapper collectDishesMapper;
 
-    @RequestMapping(value = "/getCollectDishesListByUserId")
+    @RequestMapping(value = "/v/api/dishes_list/collect" , method = RequestMethod.GET)
     @Authentication
     public BaseJson getCollectDishesListByUserId(@RequestParam("userId") Integer userId,@RequestParam("pageNumber")Integer pageNumber,@RequestParam("pageSize")Integer pageSize) {
         BaseJson baseJson = new BaseJson();
@@ -53,7 +54,7 @@ public class DishesController extends APIBaseController{
         return baseJson;
     }
 
-    @RequestMapping(value = "/getCollectStatusByUserIdByDishesId")
+    @RequestMapping(value = "/v/api/collect_status" , method = RequestMethod.GET)
     @Authentication
     public BaseJson getCollectStatusByUserIdByDishesId(@RequestParam("dishesId") Integer dishesId,@RequestParam("userId")Integer userId) {
         BaseJson baseJson = new BaseJson();
@@ -77,7 +78,7 @@ public class DishesController extends APIBaseController{
     }
 
 
-    @RequestMapping(value = "/changeCollectStatusByDishesByUserId")
+    @RequestMapping(value = "/v/api/collect_status" , method = RequestMethod.PUT)
     @Authentication
     public BaseJson getCollectStatusByUserIdByDishesId(@RequestParam("dishesId") Integer dishesId,@RequestParam("userId")Integer userId,@RequestParam("isCollect")Integer isCollect) {
         BaseJson baseJson = new BaseJson();
