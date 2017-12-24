@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/dishes")
+@RequestMapping("/v1/api/dishes")
 public class DishesController extends APIBaseController{
     @Autowired
     private DishesMapper dishesMapper;
@@ -33,7 +33,7 @@ public class DishesController extends APIBaseController{
     @Autowired
     private CollectDishesMapper collectDishesMapper;
 
-    @RequestMapping(value = "/v/api/dishes_list/collect" , method = RequestMethod.GET)
+    @RequestMapping(value = "/dishes_list/collect" , method = RequestMethod.GET)
     @Authentication
     public BaseJson getCollectDishesListByUserId(@RequestParam("userId") Integer userId,@RequestParam("pageNumber")Integer pageNumber,@RequestParam("pageSize")Integer pageSize) {
         BaseJson baseJson = new BaseJson();
@@ -54,7 +54,7 @@ public class DishesController extends APIBaseController{
         return baseJson;
     }
 
-    @RequestMapping(value = "/v/api/collect_status" , method = RequestMethod.GET)
+    @RequestMapping(value = "/collect_status" , method = RequestMethod.GET)
     @Authentication
     public BaseJson getCollectStatusByUserIdByDishesId(@RequestParam("dishesId") Integer dishesId,@RequestParam("userId")Integer userId) {
         BaseJson baseJson = new BaseJson();
@@ -78,7 +78,7 @@ public class DishesController extends APIBaseController{
     }
 
 
-    @RequestMapping(value = "/v/api/collect_status" , method = RequestMethod.PUT)
+    @RequestMapping(value = "/collect_status" , method = RequestMethod.PUT)
     @Authentication
     public BaseJson getCollectStatusByUserIdByDishesId(@RequestParam("dishesId") Integer dishesId,@RequestParam("userId")Integer userId,@RequestParam("isCollect")Integer isCollect) {
         BaseJson baseJson = new BaseJson();

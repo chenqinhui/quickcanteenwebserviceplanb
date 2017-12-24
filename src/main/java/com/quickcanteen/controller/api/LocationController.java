@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/location")
+@RequestMapping("/v1/api/location")
 public class LocationController extends APIBaseController {
     @Autowired
     private LocationMapper locationMapper;
 
-    @RequestMapping(value = "/v/api/location" , method = RequestMethod.GET)
+    @RequestMapping(value = "" , method = RequestMethod.GET)
     @Authentication
     public BaseJson getLocationsByUserID(@RequestParam("userID") Integer userId) {
         BaseJson baseJson = new BaseJson();

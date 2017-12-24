@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * Created by 11022 on 2017/8/20.
  */
 @RestController
-@RequestMapping("/api/company")
+@RequestMapping("/v1/api/company")
 public class CompanyController extends APIBaseController {
     @Autowired
     private CompanyInfoMapper companyInfoMapper;
@@ -36,7 +36,7 @@ public class CompanyController extends APIBaseController {
     @Autowired
     private DishesMapper dishesMapper;
 
-    @RequestMapping(value = "/v/api/company", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     @Authentication
     public BaseJson getCompanyInfoById(@PathVariable("companyID") Integer companyID) {
         BaseJson baseJson = new BaseJson();
@@ -49,7 +49,7 @@ public class CompanyController extends APIBaseController {
         return baseJson;
     }
 
-    @RequestMapping(value = "/v/api/type/dishes" ,method = RequestMethod.GET)
+    @RequestMapping(value = "/type/dishes" ,method = RequestMethod.GET)
     @Authentication
     public BaseJson getTypesAndDishesByCompanyId(@PathVariable("companyID") Integer companyID) {
         BaseJson baseJson = new BaseJson();

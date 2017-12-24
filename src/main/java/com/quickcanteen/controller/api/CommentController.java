@@ -14,7 +14,7 @@ import java.text.DecimalFormat;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/api/comment")
+@RequestMapping("v1/api/comment")
 public class CommentController extends APIBaseController {
     @Autowired
     private UserCommentMapper userCommentMapper;
@@ -31,13 +31,13 @@ public class CommentController extends APIBaseController {
     @Autowired
     private DishesMapper dishesMapper;
 
-    @RequestMapping(value = "/v/api/comment/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     @Authentication(Role.User)
     public BaseJson postComment(@RequestParam("object_id") int objectId,
                                 @RequestParam("userId") int userId,
                                 @RequestParam("commentContent") String commentContent,
                                 @RequestParam("rating") double rating,
-                                @PathVariable("isCompany") int isCompany) {
+                                @RequestParam("isCompany") int isCompany) {
         BaseJson baseJson = new BaseJson();
         Date commentTime = new Date();
         UserComment userComment = new UserComment(userId, rating, commentContent, commentTime);
