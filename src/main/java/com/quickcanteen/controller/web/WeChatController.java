@@ -23,6 +23,7 @@ public class WeChatController extends BaseController{
     private static final String MODULE_V_COMMENT = "wechat/evaluate";
     private static final String MODULE_V_ORDER_SETTLEMENT = "wechat/order_settlement";
     private static final String MODULE_V_SUCCESS = "wechat/success";
+    private static final String MODULE_V_UNSUBSCRIBE = "wechat/unsubscribe";
 
     @Autowired
     private DishesMapper dishesMapper;
@@ -71,6 +72,13 @@ public class WeChatController extends BaseController{
     public String success(Map<String, Object> model) {
         model.put("module", MODULE_V_SUCCESS);
         return MODULE_V_SUCCESS;
+    }
+
+    @RequestMapping(value = "/unsubscribe")
+    @Authentication(Role.Company)
+    public String unSubscribe(Map<String, Object> model) {
+        model.put("module", MODULE_V_UNSUBSCRIBE);
+        return MODULE_V_UNSUBSCRIBE;
     }
 
 }

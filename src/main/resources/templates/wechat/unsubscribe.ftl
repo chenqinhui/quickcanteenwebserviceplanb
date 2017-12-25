@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>支付成功</title>
+    <title>退订</title>
     <meta name="keywords" content="KEYWORDS..." />
     <meta name="description" content="DESCRIPTION..." />
     <meta name="author" content="DeathGhost" />
@@ -21,28 +21,31 @@
     <link rel="stylesheet" type="text/css" href="/wechat_css/reset.css" />
 </head>
 
-<body id="callPhone">
+<body id="unSubscribe">
 <div class="callPhone">
-    <div class="callPhone1">
-		<img src="/image/success_img.png"/>
+    <div class="unSubscribeSuccess">
+		<img src="/image/cancel_img.png"/>
 	</div>
-    <div class="callPhone1">
-		<p>支付成功！</p>
-        <p>您的订单号为111，</p>
-        <p>time凭订单号到窗取餐，</p>
-        <p>过期订单作废，</p>
-        <p>请及时领取，谢谢！</p>
+    <div class="unSubscribeSuccess">
+		<h style="font-size:2em">退订成功！</h>
     </div>
 	<div>
         <hr style="margin:0 auto;height:1px;border:0px;background-color:#cccccc;overflow:hidden;"/>
 	</div>
-    <div class="callCon">
-        <p style="color: #cccccc">如需退订，请在2分钟内完成！</p>
+    <div class="unSubscribe">
+        <p>请问您退订的原因是？</p>
+        <div>
+                <input type="checkbox" id="inlineCheckbox1" value="option1"> 点错菜
+                <input type="checkbox" id="inlineCheckbox2" value="option2"> 选错食堂
+        </div>
+        <div>
+                <input type="checkbox" id="inlineCheckbox3" value="option3"> 窗口太远
+                <input type="checkbox" id="inlineCheckbox4" value="option4"> 时间来不及
+        </div>
     </div>
     <div style="height:1rem;"></div>
     <div class="order-set-paybutton">
-        <div class="paybutton-left fl" style="width: 50%;text-align: center;">退订</div>
-        <div class="paybutton-right fr" style="width: 50%;text-align: center;"><a href="#">确认</a></div>
+        <div class="paybutton-right fr" style="width: 100%;text-align: center;"><a href="#">提交</a></div>
         <div class="clearfix"></div>
     </div>
 </div>
