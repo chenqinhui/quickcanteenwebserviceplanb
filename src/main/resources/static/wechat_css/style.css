@@ -1497,20 +1497,20 @@ ul{ padding: 0; margin: 0;}
 
 
 /*call-phone*/
-#callPhone{background: linear-gradient(#a8ede9, #05d2c9);  }
+#callPhone{background: #ffffff;text-align:center}
 .callPhone1, .callPhone2, .callCon{
 	width: 80%;
-	margin: auto;
+	margin: 0 auto;
 	display: block;
 	margin-top:10%;
 	text-align: center;
-	color: #fff;
+	color: #000;
 	font-size: .32rem;
 }
 .callPhone2{margin-top:20%;}
 .callPhone1 img, .callPhone2 img{width: 100%;display: block;}
-.callPhone2 img{width:30%;display: block;margin: auto;margin-bottom: 4%;}
-.callCon input{background-color: #10d4cb;border: solid 1px #fff;border-radius: 5px;width: 50%;padding: .1rem;line-height: .5rem;height: .5rem;}
+.callPhone2 img{width:30%;display: block;margin:0 auto;margin-bottom: 4%;}
+.callCon input{background-color: #ffffff;border: solid 1px #fff;border-radius: 5px;width: 50%;padding: .1rem;line-height: .5rem;height: .5rem;}
 
 
 /*service*/

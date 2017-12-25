@@ -12,21 +12,21 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="format-detection" content="telephone=no">
 		<meta name="format-detection" content="address=no">
-		<link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
-		<link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/icon/apple-touch-icon-57x57-precomposed.png">
-		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="images/icon/apple-touch-icon-120x120-precomposed.png">
-		<link rel="apple-touch-icon-precomposed" sizes="196x196" href="images/icon/apple-touch-icon-196x196-precomposed.png">
+		<link rel="icon" href="/images/icon/favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon-precomposed" sizes="57x57" href="/images/icon/apple-touch-icon-57x57-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="/images/icon/apple-touch-icon-120x120-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="196x196" href="/images/icon/apple-touch-icon-196x196-precomposed.png">
 		<meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no">
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<link rel="stylesheet" type="text/css" href="css/reset.css" />
-		<script src="js/jquery.js"></script>
+		<link rel="stylesheet" type="text/css" href="/wechat_css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/wechat_css/reset.css" />
+		<script src="/wechat_js/jquery.js"></script>
 
 	</head>
 
 	<body style="background-color: #e7e7e7;">
 		<div class="evaluate">
 			<div class="evaluate-title clearfix">
-				<img src="img/photo-title.png" />
+				<img src="/images/photo-title.png" />
 				<h1>合肥南站点</h1>
 			</div>
 
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<div class="SubmitButton">提交评价</div>
-		<script type="text/javascript" src="js/startScore.js"></script>
+		<script type="text/javascript" src="/wechat_js/startScore.js"></script>
 		<script>
 			scoreFun($("#startone"))
 		</script>
