@@ -12,16 +12,16 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="format-detection" content="telephone=no">
 		<meta name="format-detection" content="address=no">
-		<link rel="icon" href="images/icon/favicon.ico" type="image/x-icon">
-		<link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/icon/apple-touch-icon-57x57-precomposed.png">
-		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="images/icon/apple-touch-icon-120x120-precomposed.png">
-		<link rel="apple-touch-icon-precomposed" sizes="196x196" href="images/icon/apple-touch-icon-196x196-precomposed.png">
+		<link rel="icon" href="/images/icon/favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon-precomposed" sizes="57x57" href="/images/icon/apple-touch-icon-57x57-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="120x120" href="/images/icon/apple-touch-icon-120x120-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="196x196" href="/images/icon/apple-touch-icon-196x196-precomposed.png">
 		<meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no">
-		<link rel="stylesheet" type="text/css" href="css/reset.css">
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<script type="text/javascript" src="js/jquery-1.11.1.min.js" ></script>
-		<script type="text/javascript" src="js/date.js" ></script>
-		<script type="text/javascript" src="js/iscroll.js" ></script>
+		<link rel="stylesheet" type="text/css" href="/wechat_css/reset.css">
+		<link rel="stylesheet" type="text/css" href="/wechat_css/style.css" />
+		<script type="text/javascript" src="/wechat_js/jquery-1.11.1.min.js" ></script>
+		<script type="text/javascript" src="/wechat_js/date.js" ></script>
+		<script type="text/javascript" src="/wechat_js/iscroll.js" ></script>
 		<script>
 			$(function() {
 				var all = $("#time").html();
@@ -48,8 +48,8 @@
 			/*支付标签切换*/
 			$(function(){
 				$(".payway").click(function(){
-					$(".fr>img").attr("src","img/check (1).png");
-					$(this).find(".fr>img").attr("src","img/check (2).png") ;
+					$(".fr>img").attr("src","/images/check (1).png");
+					$(this).find(".fr>img").attr("src","/images/check (2).png") ;
 				})
 			})
 		</script>
@@ -95,7 +95,7 @@
 				</tr>
 				<tr>
 					<td align="left" class="padl3" style="color:#999">餐品详情</td>
-					<td align="right" width="50%" style="color:#999">更多<img style="width:.3rem;" src="img/jtx1.png" /></td>	
+					<td align="right" width="50%" style="color:#999">更多<img style="width:.3rem;" src="/images/jtx1.png" /></td>
 				</tr>
 				<tr>
 					<td align="left" class="padl3">商品名称1</td>

@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="utf-8" />
-		<title>商品详情</title>
+		<title>菜品详情</title>
 		<meta name="keywords" content="KEYWORDS..." />
 		<meta name="description" content="DESCRIPTION..." />
 		<meta name="author" content="DeathGhost" />
@@ -15,13 +14,13 @@
 		<meta name="viewport" content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no">
 		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
 		<!--导航栏渐变开始-->
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/index.css">
+		<link rel="stylesheet" href="/wechat_css/reset.css">
+		<link rel="stylesheet" href="/wechat_css/index.css">
 		<!--导航栏渐变结束-->
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
-		<link rel="stylesheet" type="text/css" href="css/swiper3.07.min.css" />
-		<script src="js/jquery.js"></script>
-		<script src="js/swiper.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/wechat_css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/wechat_css/swiper3.07.min.css" />
+		<script src="/wechat_js/jquery.js"></script>
+		<script src="/wechat_js/swiper.min.js"></script>
 		<style>
 			#slide {width: 100%; height:auto;overflow: hidden;position: relative;margin: 0;    height: 3rem;}
 			#slide .swiper-slide {text-align: center;height: auto;}
@@ -72,12 +71,12 @@
 			<div class="swiper-wrapper">
 				<div class="swiper-slide">
 					<a href="#">
-						<img src="upload/banner1.jpg" />
+						<img src="/upload/banner1.jpg" />
 					</a>
 				</div>
 				<div class="swiper-slide">
 					<a href="#">
-						<img src="upload/banner2.jpg" />
+						<img src="/upload/banner2.jpg" />
 					</a>
 				</div>
 			</div>	
@@ -130,18 +129,18 @@
 			<dd >	
 				<div class="evaluate">
 					<div class="evaluate-fl">
-						<span><img src="img/index (1).png"></span>
+						<span><img src="/image/index (1).png"></span>
 						<span>
 							<p>Ventilate</p>
 							<p class="color999"> 2017-11-13</p>
 						</span>
 					</div>
 					<div class="evaluate-fr">
-						<img src="img/shoucang1.png">
-						<img src="img/shoucang1.png">
-						<img src="img/shoucang1.png">
-						<img src="img/shoucang1.png">
-						<img src="img/shoucang1.png">
+						<img src="/image/shoucang1.png">
+						<img src="/image/shoucang1.png">
+						<img src="/image/shoucang1.png">
+						<img src="/image/shoucang1.png">
+						<img src="/image/shoucang1.png">
 					</div>
 				</div>
 				<div class="evaluate-text">
@@ -151,18 +150,18 @@
 			<dd >	
 				<div class="evaluate">
 					<div class="evaluate-fl">
-						<span><img src="img/index (1).png"></span>
+						<span><img src="/image/index (1).png"></span>
 						<span>
 							<p>Ventilate</p>
 							<p class="color999"> 2017-11-13</p>
 						</span>
 					</div>
 					<div class="evaluate-fr">
-						<img src="img/shoucang1.png">
-						<img src="img/shoucang1.png">
-						<img src="img/shoucang1.png">
-						<img src="img/shoucang1.png">
-						<img src="img/shoucang1.png">
+						<img src="/image/shoucang1.png">
+						<img src="/image/shoucang1.png">
+						<img src="/image/shoucang1.png">
+						<img src="/image/shoucang1.png">
+						<img src="/image/shoucang1.png">
 					</div>
 				</div>
 				<div class="evaluate-text">
