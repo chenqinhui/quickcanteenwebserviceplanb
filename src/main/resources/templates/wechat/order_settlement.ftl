@@ -72,12 +72,28 @@
 		
 		<div class="order-details-header clearfix">			
 			<h4 class="fl">就餐方式</h4>	
-			<select class="fr">
-				<option>打包</option>
-				<option>堂吃</option>
-				<option>外卖</option>
+			<select class="fr" name="selects" id="selects" onchange="selectWay(this);">
+				<option id="take_out" value="take_out">打包</option>
+				<option id="eat_in" value="eat_in">堂吃</option>
+				<option id="distribute" value="distribute">外卖</option>
 			</select>
 		</div>
+		<script type="text/javascript" language="javascript">
+            function selectWay(item) {
+                var selected = $(item);
+                //console.log(selected.val());
+                if (selected.val()==="distribute") {
+                    $("#order-settlement-address").css('display','');
+                }
+                else {
+                    $("#order-settlement-address").css('display','none');
+                }
+            }
+		</script>
+        <div class="order-details-header clearfix" id="order-settlement-address" style="display: none">
+            <h4 class="fl">送餐地址</h4>
+            <h4 align="right" style="color: #000;text-align: right" href="#">${defaultAddress}</h4>
+        </div>
 		<div class="invoice" id="order-settlement">
 			<span><input type="radio" name="radiobutton" value="radiobutton" checked> 即时 </span>
 			<span><input type="radio" name="radiobutton" value="radiobutton" checked>预约时间
@@ -87,36 +103,39 @@
 			<tbody>
 				<tr>
 					<td align="left" class="padl3" style="color:#999">订单号</td>
-					<td align="right" width="50%" style="color:#999">123456</td>	
+					<td align="right" width="50%" style="color:#999">${order.orderId}</td>
 				</tr>
 				<tr style="border-bottom: solid 8px #f1f1f1;">
-					<td align="left" class="padl3">交餐地点</td>
-					<td align="right" width="50%">合肥南站店</td>	
+					<td align="left" class="padl3">食堂名称</td>
+					<td align="right" width="50%">${order.companyId}</td>
 				</tr>
 				<tr>
 					<td align="left" class="padl3" style="color:#999">餐品详情</td>
 					<td align="right" width="50%" style="color:#999">更多<img style="width:.3rem;" src="/images/jtx1.png" /></td>
 				</tr>
-				<tr>
-					<td align="left" class="padl3">商品名称1</td>
-					<td align="left" width="50%">×<em>1</em></td>	
-				</tr>
-				<tr>
-					<td align="left" class="padl3">商品名称2</td>
-					<td align="left" width="50%">×<em>1</em></td>
-					
-				</tr>
-				<tr>
-					<td align="left" colspan="1" class="padl3">商品名称2</td>
-					<td align="left" class="padr3">×<em>1</em></td>
-				</tr>
+				<#list order.dishesVos as dishes>
+                <tr>
+                    <td align="left" class="padl3">${dishes.dishesName}</td>
+                    <td align="right" width="50%">×<em>${dishes.count}</em></td>
+                </tr>
+				</#list>
 				<tr>
 					<td align="left" colspan="1" class="padl3">餐盒费</td>
 					<td align="right" class="padr3">￥<em>1</em></td>
 				</tr>
+                <#if order.deliverManId!=0>
+                <tr>
+                    <td align="left" colspan="1" class="padl3">配送费</td>
+                    <td align="right" class="padr3">￥<em>5</em></td>
+                </tr>
+                </#if>
 				<tr>
 					<td align="left" colspan="1" class="padl3">餐品总额</td>
-					<td align="right" class="padr3">￥<em>132.00</em></td>
+					<#if order.deliverManId!=0>
+						<td align="right" class="padr3">￥<em>${order.totalPrice+1}</em></td>
+					<#else>
+                        <td align="right" class="padr3">￥<em>${order.totalPrice+5+1}</em></td>
+					</#if>
 				</tr>
 				<tr>
 					<td align="left" colspan="1" class="padl3">优惠券</td>
@@ -128,14 +147,19 @@
 				<tr>
 					<td align="left" class="padl3">订单</td>	
 					<td align="right" class="padr3 color-ec7602" style="font-size: 16px;">
-						<a href="#" class="padding-right23 colore2bf1e">积分抵￥1.00
+						<a href="#" class="padding-right23 colore2bf1e">积分抵￥0.00
 						<i href="#" class="isNext"></i>
 					</td>
 				</tr>				
 				<tr style="border-top: solid 8px #f1f1f1;">
 					<td align="left" colspan="1" class="padl3">实付金额:</td>
 					<td align="right" class="padr3">
-						<a href="#" class="padding-right23 colorf00">￥119.5
+						<a href="#" class="padding-right23 colorf00">￥
+						<#if order.deliverManId!=0>
+                    		${order.totalPrice+1}
+						<#else>
+                    		${order.totalPrice+5+1}
+						</#if>
 						<i href="#" class="isNext"></i>
 					</td>
 				</tr>			
@@ -144,10 +168,35 @@
 		
 		<div style="height:1rem;"></div>
 		<div class="order-set-paybutton">
-			<div class="paybutton-left fl" style="width: 40%;text-align: center;">取消</div>
-			<div class="paybutton-right fr" style="width: 60%;text-align: center;"><a href="#">确认订单</a></div>
+			<div class="paybutton-left fl" style="width: 50%;text-align: center;">取消</div>
+			<div class="paybutton-right fr" style="width: 50%;text-align: center;"><a onclick="updateOrderStatus(${order.orderId},100);return false;">确认订单</a></div>
 			<div class="clearfix"></div>
 		</div>
+        <script type="text/javascript">
+            function updateOrderStatus(orderId, toStatus) {
+                alert("!!!");
+                $.ajax({
+                    type: "post",
+                    url: "/api/order/updateOrderState",
+                    timeout: 8000,
+                    dataType: "json",
+                    data: {
+                        "orderId": orderId,
+                        "orderStatus": toStatus
+                    },
+                    success: function () {
+                        alert("修改成功");
+                        if(toStatus==100)
+                        	window.location.href = "/weChat/success/"+orderId;
+                        if(toStatus==80)
+                            window.location.href = "/weChat/index";
+                    },
+                    error: function () {
+                        alert("请求出错")
+                    }
+                })
+            }
+		</script>
 <div id="datePlugin"></div>
 	</body>
 	

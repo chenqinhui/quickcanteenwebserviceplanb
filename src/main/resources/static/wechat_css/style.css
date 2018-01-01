@@ -920,13 +920,10 @@ ul{ padding: 0; margin: 0;}
 .paybutton-left{
 	background-color: #CCCCCC;
 	color: #fff;
-	padding-left: 3%;
 	}
 .paybutton-right{
 	background-color: #00CC00;
 	color: #fff;
-	padding-right: 3%;
-	padding:0 0.5rem ;
 }
 .paybutton-right a{color: #fff;}
 

@@ -45,7 +45,7 @@
     </div>
     <div style="height:1rem;"></div>
     <div class="order-set-paybutton">
-        <div class="paybutton-right fr" style="width: 100%;text-align: center;"><a href="#">提交</a></div>
+        <div class="paybutton-right fr" style="width: 100%;text-align: center;"><a onclick="updateOrderStatus(${order.orderId},80;return false;)">提交</a></div>
         <div class="clearfix"></div>
     </div>
 </div>

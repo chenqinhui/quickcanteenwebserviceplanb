@@ -257,6 +257,7 @@ public class WebCompanyController extends BaseController {
             dishesVo.setCount(orderDishesMapper.selectByPrimaryKey(orderDishesKey).getCount());
         }
         result.setDishesVos(dishesVos);
+        result.setDeliverManId(order.getDeliverManId());
         return result;
     }
 

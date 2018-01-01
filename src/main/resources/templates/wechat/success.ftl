@@ -28,8 +28,8 @@
 	</div>
     <div class="callPhone1">
 		<p>支付成功！</p>
-        <p>您的订单号为111，</p>
-        <p>time凭订单号到窗取餐，</p>
+        <p>您的订单号为${order.orderId}</p>
+        <p>${order.mealTime}凭订单号到窗取餐，</p>
         <p>过期订单作废，</p>
         <p>请及时领取，谢谢！</p>
     </div>
@@ -41,8 +41,8 @@
     </div>
     <div style="height:1rem;"></div>
     <div class="order-set-paybutton">
-        <div class="paybutton-left fl" style="width: 50%;text-align: center;">退订</div>
-        <div class="paybutton-right fr" style="width: 50%;text-align: center;"><a href="#">确认</a></div>
+        <div class="paybutton-left fl" style="width: 50%;text-align: center;"><a href="/weChat/unsubscribe/${order.orderId}">退订</a></div>
+        <div class="paybutton-right fr" style="width: 50%;text-align: center;"><a href="/weChat/index">确认</a></div>
         <div class="clearfix"></div>
     </div>
 </div>

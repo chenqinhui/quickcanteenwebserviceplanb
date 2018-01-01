@@ -25,8 +25,12 @@ public class OrderVo {
 
     private Integer timeslotId;
 
+    private String mealTime;
+
     private String userName;
 
     private List<DishesVo> dishesVos;
+
+    private Integer deliverManId;
 
 }
