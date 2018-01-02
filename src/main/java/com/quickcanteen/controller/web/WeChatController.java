@@ -4,15 +4,20 @@ import com.quickcanteen.annotation.Authentication;
 import com.quickcanteen.dto.Role;
 import com.quickcanteen.mapper.DishesMapper;
 import com.quickcanteen.mapper.TypeMapper;
-import com.quickcanteen.model.CompanyInfo;
+import com.quickcanteen.mapper.UserCommentMapper;
+import com.quickcanteen.mapper.UserInfoMapper;
 import com.quickcanteen.model.Dishes;
-import com.quickcanteen.model.Type;
+import com.quickcanteen.model.UserComment;
+import com.quickcanteen.vo.CommentVo;
+import com.quickcanteen.vo.DishesVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/weChat")
@@ -25,8 +30,15 @@ public class WeChatController extends BaseController{
     private static final String MODULE_V_SUCCESS = "wechat/success";
     private static final String MODULE_V_UNSUBSCRIBE = "wechat/unsubscribe";
 
+
     @Autowired
     private DishesMapper dishesMapper;
+
+    @Autowired
+    private UserCommentMapper userCommentMapper;
+
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
     @Autowired
     private TypeMapper typeMapper;
@@ -49,6 +61,10 @@ public class WeChatController extends BaseController{
     @RequestMapping(value = "/dishes_detail")
     @Authentication(Role.Company)
     public String dishesDetail(Map<String, Object> model) {
+        DishesVo dishes = new DishesVo();
+        dishes = parse (dishesMapper.selectByPrimaryKey(2));
+
+        model.put("dishes", dishes);
         model.put("module", MODULE_V_DISHES_DETAIL);
         return MODULE_V_DISHES_DETAIL;
     }
@@ -79,6 +95,23 @@ public class WeChatController extends BaseController{
     public String unSubscribe(Map<String, Object> model) {
         model.put("module", MODULE_V_UNSUBSCRIBE);
         return MODULE_V_UNSUBSCRIBE;
+    }
+
+    private DishesVo parse(Dishes dishes) {
+        DishesVo result = new DishesVo();
+        BeanUtils.copyProperties(dishes,result);
+        result.setCount(0);
+        result.setCommentVos(userCommentMapper.getUserCommentsByDishId(dishes.getDishesId()).stream().map(this::parse).collect(Collectors.toList()));
+        return result;
+    }
+
+    private CommentVo parse(UserComment comment) {
+        CommentVo result = new CommentVo();
+        BeanUtils.copyProperties(comment, result);
+        result.setCommenterName(userInfoMapper.selectByPrimaryKey(comment.getCommenterId()).getRealName());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        result.setCommentTimeStr(sdf.format(comment.getCommentTime()));
+        return result;
     }
 
 }

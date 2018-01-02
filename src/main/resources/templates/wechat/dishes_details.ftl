@@ -84,16 +84,25 @@
 		<!--商品详情-->
 		<div class="Conmmodity">
 			<span>
-				<h1>糖醋里脊</h1>
-				<p class="color999">月销288</p>
+				<h1>
+					<!--糖醋里脊-->
+					${dishes.dishesName}
+
+				</h1>
+				<p class="color999">
+					<!--月销288-->
+					月销 ${dishes.count}
+				</p>
 			</span>
-			<span class="colorf00 f035">￥20</span>
+			<span class="colorf00 f035">
+				<!--￥20-->
+				￥${dishes.price}
+			</span>
 		</div>
 		<!--商品tab切换-->
-		<div class="conmmodityTab clearfix">
-			<a href="javascript:;" class="active">菜品介绍</a>
-			<a href="javascript:;">配料准备</a>
-			<div class="clearfix"></div>
+        <div style=" height:20px;line-height:20px;
+                      overflow:hidden;border:1px ;text-align:center">菜品介绍</div>
+
 		</div>
 		<div class="conmmodity-container" >
 			<div class="swiper-wrapper w">
@@ -103,14 +112,11 @@
 						<div class="swiper-wrapper">
 							<div class="swiper-slide list-group">
 								<p>
-									糖醋里脊是经典传统名菜之一，以猪肉里脊肉为主才，配以面粉，淀粉，醋等，酸甜可口，让人食欲大开。在浙菜，卤菜，川菜里均有此菜，菜品介绍
+									<!-- 菜品介绍 -->
+									<!--糖醋里脊是经典传统名菜之一，以猪肉里脊肉为主才，配以面粉，淀粉，醋等，酸甜可口，让人食欲大开。在浙菜，卤菜，川菜里均有此菜，菜品介绍-->
+									${dishes.dishesIntroduce}
 								</p>
 
-							</div>
-							<div class="swiper-slide list-group">
-								<p>
-									主辅料：猪里脊120克，胡萝卜100克，冬笋80克，黑木耳50克；调料：葱，姜，大蒜，草菇老抽，山西老陈醋，精盐，味精，白砂糖，生粉，郫县豆瓣酱，郫县泡椒酱适量。
-								</p>
 							</div>
 						
 						</div>
@@ -124,52 +130,28 @@
 		<dl class="evaluateList">
 			<dt class="evaluateList-title">
 				<p class="f035">评价</p>
-				<p class="f03">好评度<em class="colorf00">100%</em></p>
+				<p class="f03">星级<em class="colorf00"> ${dishes.rating}</em></p>
 			</dt>
-			<dd >	
-				<div class="evaluate">
-					<div class="evaluate-fl">
-						<span><img src="/image/index (1).png"></span>
+
+		    <#list dishes.commentVos as comment>
+                <dd >
+                    <div class="evaluate">
+                        <div class="evaluate-fl">
 						<span>
-							<p>Ventilate</p>
-							<p class="color999"> 2017-11-13</p>
+							<p>${comment.commenterName}</p>
+							<p class="color999"> ${comment.commentTimeStr}</p>
 						</span>
-					</div>
-					<div class="evaluate-fr">
-						<img src="/image/shoucang1.png">
-						<img src="/image/shoucang1.png">
-						<img src="/image/shoucang1.png">
-						<img src="/image/shoucang1.png">
-						<img src="/image/shoucang1.png">
-					</div>
-				</div>
-				<div class="evaluate-text">
-					评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
-				</div>
-			</dd>
-			<dd >	
-				<div class="evaluate">
-					<div class="evaluate-fl">
-						<span><img src="/image/index (1).png"></span>
-						<span>
-							<p>Ventilate</p>
-							<p class="color999"> 2017-11-13</p>
-						</span>
-					</div>
-					<div class="evaluate-fr">
-						<img src="/image/shoucang1.png">
-						<img src="/image/shoucang1.png">
-						<img src="/image/shoucang1.png">
-						<img src="/image/shoucang1.png">
-						<img src="/image/shoucang1.png">
-					</div>
-				</div>
-				<div class="evaluate-text">
-					评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容
-				</div>
-			</dd>
-		</dl>
-		
+                        </div>
+                        <div class="evaluate-fr">
+
+                        </div>
+                    </div>
+                    <div class="evaluate-text">
+                        <p> ${comment.commentContent}</p>
+                    </div>
+                </dd>
+		    </#list>
+
 		
 		
 		<!--商品详情页的banner图片位置-->			
