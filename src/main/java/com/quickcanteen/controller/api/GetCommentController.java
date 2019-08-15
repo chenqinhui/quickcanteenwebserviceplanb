@@ -12,9 +12,7 @@ import com.quickcanteen.util.CommentParser;
 import com.quickcanteen.vo.CommentVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -22,7 +20,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/getComment")
+@RequestMapping("/v1/api/comment")
 public class GetCommentController extends APIBaseController {
 
 
@@ -31,7 +29,7 @@ public class GetCommentController extends APIBaseController {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
-    @RequestMapping("/getCommentByDishesId")
+    @RequestMapping(value = "" , method = RequestMethod.GET)
     //@Authentication(Role.User)
     @Authentication
     public BaseJson getCommentByDishesId(@RequestParam("dishesId") Integer dishesId) {

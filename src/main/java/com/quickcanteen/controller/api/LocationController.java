@@ -8,6 +8,7 @@ import com.quickcanteen.model.Location;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,12 +16,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/location")
+@RequestMapping("/v1/api/location")
 public class LocationController extends APIBaseController {
     @Autowired
     private LocationMapper locationMapper;
 
-    @RequestMapping(value = "/getLocationsByUserID")
+    @RequestMapping(value = "" , method = RequestMethod.GET)
     @Authentication
     public BaseJson getLocationsByUserID(@RequestParam("userID") Integer userId) {
         BaseJson baseJson = new BaseJson();
